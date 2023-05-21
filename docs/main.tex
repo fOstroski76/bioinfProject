@@ -1,0 +1,46 @@
+\documentclass[times, utf8, seminar, numeric]{fer}
+\usepackage{booktabs}
+ \usepackage{url}
+
+\begin{document}
+
+% Ukljuci literaturu u seminar
+\nocite{*}
+
+% TODO: Navedite naslov rada.
+\title{Vlastita implementacija filtera: \protect\\ The Logarithmic Dynamic Cuckoo Filter}
+
+% TODO: Navedite vaše ime i prezime.
+\author{Fran Ostroški, Elena Wachtler}
+
+% TODO: Navedite ime i prezime voditelja.
+\voditelj{Mirjana Domazet-Lošo}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Uvod}
+Spomenuti glavnu temu projekta, da se radi o projektu u sklopu kolegija Bioinformatika 1. Spomenuti sve izvore iz literature, točno što je koji od njih napravio i kako se jedan razlikuje od drugog (ovo se boduje, čak 3 boda, baš se moraju spomenuti izvori u tekstu, tako piše u uputama).
+
+NAPOMENA: u bibtex fileu nedostaje jedan izvor, nisam mogla naći njegov .bib: 
+Fan et al. 2013. Cuckoo Filter: Better Than Bloom; https://www.cs.cmu.edu/~binfan/papers/login cuckoofilter.pdf - našla sam samo za Practically Better Than Bloom.
+
+\chapter{Opis algoritma}
+Mogu se i ovdje koristiti izvori, možda čak i bolje nego da se koriste u Uvodu, iako se mogu i u uvodu spomenuti.
+
+Vizualizacija algoritma na jednostavnom primjeru.
+
+\chapter{Analiza}
+Analiza točnosti, vremena izvođenja i utroška memorije za različite testne slučajeve - ovo nosi 3 boda. Testira se na stvarnim podatcima, kod nas E. coli - rezultati prikazani u tablici ili grafu.
+
+\chapter{Zaključak}
+Zaključak.
+
+\bibliography{literatura}
+\bibliographystyle{fer}
+
+\chapter{Sažetak}
+U ovome radu dan je pregled vlastite implementacije rješenja problema opisanog u znanstvenim radovima koja je napravljena u sklopu projekta iz kolegija Bioinformatika 1 na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu.
+
+\end{document}
