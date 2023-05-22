@@ -12,6 +12,8 @@
 #include <iomanip>
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
+#include "CF.h"
+#include "LDCF.h"
 
 using namespace std;
 
@@ -32,12 +34,8 @@ string to_string(bitset<32> bs) {
     return bs.to_string();
 }
 
-const string fingerprint(const string x) {
-    cout << "called fingerprint function with argument x: " << x << endl;
-    return x;
-}
-
-const string hashF(const string str){
+const string fingerprint(const string str) {
+    // for now calculated in the same way as hash_f
     unsigned char hash[SHA256_DIGEST_LENGTH];
 
     SHA256_CTX sha256;
@@ -51,7 +49,26 @@ const string hashF(const string str){
         ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
     }
     const string retVal = ss.str();
-    // cout << "hashF function for input " << str << " returning: " << retVal << endl;
+
+    cout << "fingerprint function for input " << str << " returning: " << retVal << endl;
+    return retVal;
+}
+
+const string hash_f(const string str){
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+    SHA256_Update(&sha256, str.c_str(), str.size());
+    SHA256_Final(hash, &sha256);
+
+    stringstream ss;
+
+    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++){
+        ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
+    }
+    const string retVal = ss.str();
+    // cout << "hash_f function for input " << str << " returning: " << retVal << endl;
     return retVal;
 }
 
@@ -60,57 +77,62 @@ int checkCF(int s) {
     return 0;
 }
 
-const string getPrefix(const string x, int level) {
-    // to be implemented
-    return x;
-}
-
-int getChild(int loc, int i, string prefix) {
-    // to be implemented
-    return 0;
-}
-
-int generateRandom() {
+int generate_random() {
     srand(time(NULL));
     return (rand() % 2);
 }
 
-bool CFfull(int CF) {
-    // returns true if CF is full, false otherwise
+int generate_random_max(int max) {
+    srand(time(NULL));
+    return (rand() % max);
+}
 
+CF* choose_random_CF(int bucket_size) {
+    // TODO bucket should be class Bucket, not int
+    int index = generate_random_max(bucket_size);
+    // get CF from that index
+}
+
+string cut_prefix(string xi_x, string prefix) {
     // to be implemented
-    return false;
 }
 
 bool insert(const string x) {
-    int root;
-    int currentLevel = 0;
-    int currentLoc = root;
-    const string xi = fingerprint(x);
-    const string mu = hashF(x);
-    cout << "mu = " << mu << endl;
-    string nu = to_string(to_bitset(mu) ^ to_bitset(hashF(mu))); // ^ bitwise xor
-    // cout << typeid(nu).name() << endl;
-    cout << "nu = " << nu << endl;
+    LDCF* root; // TODO correctly initialize!
+    int current_level = 0;
+    LDCF* current_loc = root;
+    string xi_x = fingerprint(x);
+    string mu_x = hash_f(x);
+    cout << "mu_x = " << mu_x << endl;
+    string nu_x = to_string(to_bitset(mu_x) ^ to_bitset(hash_f(xi_x))); // ^ bitwise xor
+    cout << "nu_x = " << nu_x << endl;
 
     string prefix;
     int i = 0;
-    while(checkCF(currentLoc) == 0) {
-        // should be checking if it is nullptr instead of 0
-        ++currentLevel;
-        prefix = getPrefix(xi, currentLevel);
-        currentLoc = getChild(currentLoc, i, prefix);
-        ++i;
+    while(current_loc->get_node()->empty == false) {
+        // should be checking if it is nullptr instead of false
+        ++current_level;
+        prefix = current_loc->get_prefix(xi_x, current_level);
+        current_loc = current_loc->get_child(current_loc, i, prefix);
+        // ++i;
     }
-    int currentCF = checkCF(currentLoc);
-    int bucketIndex = generateRandom();
+    CF* currentCF = current_loc->get_node();
+    const string bucket = generate_random() == 0 ? xi_x : mu_x;
 
-    for(int i=0; i < MAX_RELOCATION; ++i) {
-        // to be implemented
+    CF* xi_y;
+    for(int r=0; i < MAX_RELOCATION; ++r) {
+        xi_y = choose_random_CF(bucket.length());
+        CF* victim = xi_y;
+        xi_x = cut_prefix(xi_x, prefix);
+        // to be implemented:
+        // insert xi_x into currentCF.B(bucket)
+        // victim = add_prefix(victim, pre);
+        // bucket = bucket ^ hash_f(victim);
     }
 
-    if(CFfull(currentCF)) {
-        // to be implemented
+    if(current_loc->get_node()->full) {
+        // to be implemented:
+        // current_loc = append(currentCF, current_level);
     }
 
     return true;
@@ -119,4 +141,5 @@ bool insert(const string x) {
 int main() {
     string in = "ATTTGGTAACCACTGTACTGATTACGACG";
     insert(in);
+    return 0;
 }
