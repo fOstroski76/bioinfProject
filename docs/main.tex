@@ -23,19 +23,22 @@
 
 \chapter{Uvod}
 
-TODO: Spomenuti sve izvore iz literature, točno što je koji od njih napravio i kako se jedan razlikuje od drugog (ovo se boduje, čak 3 boda, baš se moraju spomenuti izvori u tekstu, tako piše u uputama). \\
-
 Ovaj seminar opis je projekta u sklopu kolegija Bioinformatika 1 Fakulteta elektrotehnike i računarstva Sveučilišta u Zagrebu, a predstavlja vlastitu implementaciju takozvanog cuckoo filtera, točnije njegovu dinamičku logaritamsku varijantu. \\
 
 Cuckoo filter probabilistička je struktura podataka koja se koristi za određivanje pripadnosti zadanog elementa nekome skupu. Sam filter nastao je kao proširenje već postojećih Bloom filtera, a naziv je dobio prema ptici kukavici koja izbacuje jaja iz tuđih gnijezda kako bi ubacila svoja. Iako je riječ o općenitim podatcima, cuckoo filter često se primjenjuje u bioinformatici jer je pogodan za određivanje pripadnosti podnizova nukleotidnih slijedova nekom većem nizu nukleotida ili provjeru nalaze li se podnizovi jednog slijeda u nekom drugom slijedu.
 
 Pripadnost elementa nekom skupu ovom strukturom ne možemo garantirati, jer zbog implementacije algoritma postoji malena vjerojatnost za lažno pozitivne (eng. \textit{false positive}) i lažno negativne (eng. \textit{false negative}) rezultate. Upravo zbog toga što postoji određena vjerojatnost pogreške, cuckoo filter je probabilistički. Međutim, nepripadnost nekom skupu može se pouzdano odrediti. \\
 
-TODO NAPOMENA: u bibtex fileu nedostaje jedan izvor, nisam mogla naći njegov .bib: 
-Fan et al. 2013. Cuckoo Filter: Better Than Bloom; https://www.cs.cmu.edu/~binfan/papers/login cuckoofilter.pdf - našla sam samo za Practically Better Than Bloom.
 
 \chapter{Opis algoritma}
-TODO Mogu se i ovdje koristiti izvori, možda čak i bolje nego da se koriste u Uvodu, iako se mogu i u uvodu spomenuti.
+
+Cuckoo filtere kao ideju za rješavanje problema koji zahtjevaju nisku stopu lažno pozitivnih primjera predstavili su Fan, Kaminsky i Andersen \cite{DBLP:journals/usenix-login/FanAK13}, kao strukturu čija je glavna prednost u odnosu na dotad korištene Bloom filtere sposobnost brisanja. Čak štoviše, uvode cuckoo filtere kao strukturu koja ne samo da omogućuje dinamičko dodavanje i brisanje objekata, već postiže bolje \textit{lookup} performanse, pri tome koristeći manje prostora od dotad optimalnih Bloom filtera.
+Teoriju koju su predložili kasnije su i dokazali \cite{10.1145/2674005.2674994} - cuckoo filteri uistinu su nadmoćna struktura za pohranu velikog broja objekata, kada je nužan uvjet niska stopa lažno pozitivnih primjera. Uz to, dodana su i poboljšanja kako bi se smanjila prostorna složenost, i to djelomičnim sortiranjem bucketa te optimizacijom veličine bucketa - najboljim se pokazao (2, 4)-cuckoo filter, što znači da svaki objekt ima dva moguća kandidata za bucket, a svaki bucket u sebi sadrži podatke o četiri otiska (eng. \textit{fingerprint}). O bucketima je više rečeno u nastavku poglavlja gdje je dan detaljan opis rada algoritma uz primjer.
+
+Korak dalje učinili su Chen, Liao, Jin i Wu \cite{8117563} uvođenjem dinamičkog cuckoo filtera, koji bi istovremeno zadovoljavao i uvjet da se veličina strukture može fleksibilno mijenjati, ali i da operacija brisanja bude pouzdana. Autori tvrde da ovakva implementacija cuckoo filtera koja u sebi sadrži povezanu listu filtera ostvaruje 75\% smanjeno zauzeće memorije, poboljšanje u konstrukciji strukture od 50\% te ubrzanje u operaciji \textit{query} od čak 80\%. Također, kao dodatnu optimizaciju uvode gornje ograničenje na broj relokacija. Relociranje je vizualizirano u nastavku poglavlja gdje je algoritam primijenjen na jednostavan primjer.
+
+Posljednju nadogradnju ostvarili su Zhang, Chen, Jin i Reviriego \cite{9458864} ističući linearno rastuću računalnu i prostornu složenost s rastom veličine prostora podataka kao glavni nedostatak dinamičkih cuckoo filtera, te uvodeći višerazinsko binarno stablo kao rješenje tog nedostatka, zbog čega se njihova struktura naziva logaritamskim dinamičkim cuckoo filterom, LDCF. S ovim poboljšanjem, operacije dodavanja novih objekata i provjera nalazi li se objekt u strukturi (eng. \textit{membership testing}) od složenosti \textit{O(N)} (gdje je \textit{N} veličina skupa podataka) padaju na složenost \textit{O(1)}. Dodatno, ponudili su i varijantu kompaktnog LDCF-a u kojemu je dodatno smanjeno prostorno zauzeće, na način da se zadržava samo najviša razina cuckoo filtera u višerazinskom stablu. U ovome radu u poglavlju \ref{Analiza} analizirane su performanse vlastite implementacije upravo ove, najviše unaprijeđene varijante cuckoo filera - LDCF.
+
 
 \begin{flushleft}
 \textbf{Vizualizacija algoritma na jednostavnom primjeru}
@@ -45,7 +48,7 @@ TODO Mogu se i ovdje koristiti izvori, možda čak i bolje nego da se koriste u 
 U općenitom slučaju, cuckoo filter sastoji se od nizova memorijskih lokacija koje se nazivaju \textit{bucketima}. Bucketi mogu imati mjesta za više unosa, ali u ovom jednostavnom primjeru svaki bucket moći će primiti  po jedan uneseni podatak.
 
 Neka je dan jedan kratak nukleotidni slijed, npr. AACTGAT, te se kao ulazi u filter trebaju unijeti svi njegovi k-meri, za k = 3. To su : AAC, ACT, CTG, TGA i GAT . \\
-U prvom koraku algoritma za svaki unos računaju se dva sažetka (eng. \textit{hash}) pomoću odabranih funkcija sažimanja (tzv. hash funkcija).
+U prvom koraku algoritma za svaki unos računaju se dva sažetka (eng. \textit{hash}) pomoću odabranih funkcija sažimanja (tzv. \textit{hash} funkcija).
 
 \begin{figure}[H]
   \centering
@@ -117,6 +120,7 @@ TODO NAPOMENA: Eventualno doradit opise, dodat usporedbe tih algoritama iz dokum
 
  
 \chapter{Analiza}
+\label{Analiza}
 
 Analiza točnosti, vremena izvođenja i utroška memorije za različite testne slučajeve - ovo nosi 3 boda. Testira se na stvarnim podatcima, kod nas E. coli - rezultati prikazani u tablici ili grafu.
 
@@ -129,6 +133,7 @@ TODO Komentirati kako naša implementacija radi u odnosu na predloženu, komenti
 \bibliographystyle{fer}
 
 \chapter{Sažetak}
+
 U ovome radu dan je pregled vlastite implementacije rješenja problema opisanog u znanstvenim radovima koja je napravljena u sklopu projekta iz kolegija Bioinformatika 1 na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. Dan je opis algoritma, motivacija za njegovo korištenje, kao i primjer primjene na odabrani nukleotidni slijed. Nadalje, analiziran je rad algoritma u ovoj implementaciji u odnosu na dosadašnje implementacije, njegove prednosti i nedostatci. \\
 
 
