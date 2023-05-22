@@ -1,0 +1,7 @@
+\babel@toc {croatian}{}\relax 
+\contentsline {chapter}{\numberline {1}Uvod}{1}{}%
+\contentsline {chapter}{\numberline {2}Opis algoritma}{2}{}%
+\contentsline {chapter}{\numberline {3}Analiza}{6}{}%
+\contentsline {chapter}{\numberline {4}Zaključak}{7}{}%
+\contentsline {chapter}{\numberline {5}Literatura}{8}{}%
+\contentsline {chapter}{\numberline {6}Sažetak}{9}{}%

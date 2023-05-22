@@ -1,0 +1,32 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Chen et~al.(2017)Chen, Liao, Jin, i Wu]{8117563}
+Hanhua Chen, Liangyi Liao, Hai Jin, i Jie Wu.
+\newblock The dynamic cuckoo filter.
+\newblock U \emph{2017 IEEE 25th International Conference on Network Protocols
+  (ICNP)}, stranice 1--10, 2017.
+\newblock \doi{10.1109/ICNP.2017.8117563}.
+
+\bibitem[Fan et~al.(2014)Fan, Andersen, Kaminsky, i
+  Mitzenmacher]{10.1145/2674005.2674994}
+Bin Fan, Dave~G. Andersen, Michael Kaminsky, i Michael~D. Mitzenmacher.
+\newblock Cuckoo filter: Practically better than bloom.
+\newblock U \emph{Proceedings of the 10th ACM International on Conference on
+  Emerging Networking Experiments and Technologies}, CoNEXT '14, stranica
+  75–88, New York, NY, USA, 2014. Association for Computing Machinery.
+\newblock ISBN 9781450332798.
+\newblock \doi{10.1145/2674005.2674994}.
+
+\bibitem[Zhang et~al.(2021)Zhang, Chen, Jin, i Reviriego]{9458864}
+Fan Zhang, Hanhua Chen, Hai Jin, i Pedro Reviriego.
+\newblock The logarithmic dynamic cuckoo filter.
+\newblock U \emph{2021 IEEE 37th International Conference on Data Engineering
+  (ICDE)}, stranice 948--959, 2021.
+\newblock \doi{10.1109/ICDE51399.2021.00087}.
+
+\end{thebibliography}
