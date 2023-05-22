@@ -32,6 +32,10 @@ class CuckooFilter {
     void printContents();
 
     void insert(size_t index, string value); // will calculate index within a hashing function, now lets pretend it is precalculated
+
+    void deleteItem(size_t index, const std::string value); // will check if the element from given index is the same, if not, it will try to delete from alternate address if element matches, otherwise it will fail
+
+    bool query(size_t index, const std::string value); // checks if the value is present in the filter; currently doesnt yet calculate index from hash 
 };
 
 #endif // CUCKOOFILTER_H

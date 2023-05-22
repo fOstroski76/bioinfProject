@@ -21,9 +21,22 @@ int main() {
     filter.insert(7,"GTCA");
     filter.insert(1,"CTCA");
 
+    cout << endl;
     cout << "After inserts:" << endl;
 
     filter.printContents();
+
+    filter.deleteItem(3,"ATAT");
+    filter.deleteItem(1,"CGTA");
+
+    cout << endl;
+    cout << "After deletions:" << endl;
+
+    filter.printContents();
+
+    if(filter.query(7,"GTCA")) {
+        cout << "Element is present" << endl;
+    }
     // Rest of your code
 
     return 0;
