@@ -33,39 +33,60 @@ void CuckooFilter::printContents() {
 }
 
 // temporary insert function, needs to calculate hash with hash generating functions
-void CuckooFilter::insert(size_t index,  int32_t value) {
-    if (index >= single_table_length) {
-        std::cout << "Invalid index. Insertion failed." << std::endl;
-        return;
-    }
+void CuckooFilter::insert( int32_t value) {
 
-    bucket[index].stored_kmer = value;
+    size_t index;
+    size_t alt_index;
+    
+    index = generateFirstIndex(value, single_table_length);
+    alt_index = generateSecondIndex(value, 3, single_table_length);
+    
+    if (bucket[index].stored_kmer == 0) {  // first calculated position is empty
+        bucket[index].stored_kmer = value;
+
+    } else if (bucket[alt_index].stored_kmer == 0){ // second calculated position is empty
+        bucket[alt_index].stored_kmer = value;
+    } else {  // both values occupied , TU VICTIM DOLAZI, SLOŽI KASNIJE!!
+        cout << "Insert failed! Both locations occupied!" << endl;
+    }
+    
 }
 
 // temporary delete function , needs to delete as mentioned in header file , should be returning boolean value
-void CuckooFilter::deleteItem(size_t index, int32_t value) {
-    if (index >= single_table_length) {
-        std::cout << "Invalid index. Deletion failed." << std::endl;
-        return;
-    }
+void CuckooFilter::deleteItem( int32_t value) {
+    
+    size_t index;
+    size_t alt_index;
+
+    index = generateFirstIndex(value, single_table_length);
+    alt_index = generateSecondIndex(value, 3, single_table_length);
 
     if (bucket[index].stored_kmer == value) {
         bucket[index].stored_kmer = 0;  // Empty the stored value
         std::cout << "Item at index " << index << " deleted." << std::endl;
+
+    } else if (bucket[alt_index].stored_kmer == value){ // Check the alternate location and empty it
+        bucket[alt_index].stored_kmer = 0;  
+        std::cout << "Item " << value << " was at index " << alt_index << " instead of original " << index << ". Item deleted." << std::endl;
     } else {
-        std::cout << "Item at index " << index << " does not match the provided value. Deletion failed." << std::endl;
+        std::cout <<  "Deletion failed. Element wasnt in any of two locations." << std::endl;
     }
 }
 
 // temporary query function , needs also to be refractored
-bool CuckooFilter::query(size_t index, int32_t  value){
-    if (index >= single_table_length) {
-        std::cout << "Invalid index. Query failed." << std::endl;
-        return false;
-    }
+bool CuckooFilter::query(int32_t  value){
+    
+    size_t index;
+    size_t alt_index;
+
+    index = generateFirstIndex(value, single_table_length);
+    alt_index = generateSecondIndex(value, 3, single_table_length);
 
     if (bucket[index].stored_kmer == value) {
-        return true;
+        return true;    // if the value is at the first location, return true
+    }
+    else if(bucket[alt_index].stored_kmer == value) {
+        return true;    // if the value is at the alternative location, return true
     }
     else return false;
 }

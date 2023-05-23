@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string>
 
-#define MaxNumberOfKicks 5
+#define MAX_RELOCATION 5
 
 using namespace std;
 
@@ -31,11 +31,11 @@ class CuckooFilter {
 
     void printContents();
 
-    void insert(size_t index, int32_t value); // will calculate index within a hashing function, now lets pretend it is precalculated
+    void insert(int32_t value); // will calculate index within a hashing function, now lets pretend it is precalculated
 
-    void deleteItem(size_t index, int32_t value); // will check if the element from given index is the same, if not, it will try to delete from alternate address if element matches, otherwise it will fail
+    void deleteItem(int32_t value); // will check if the element from given index is the same, if not, it will try to delete from alternate address if element matches, otherwise it will fail
 
-    bool query(size_t index, int32_t value); // checks if the value is present in the filter; currently doesnt yet calculate index from hash 
+    bool query(int32_t value); // checks if the value is present in the filter; currently doesnt yet calculate index from hash 
 
     int32_t generateFirstIndex(int32_t value, size_t single_table_length); // temporary functions to generate 1st and 2nd index
 
