@@ -1,8 +1,12 @@
 // code written by Elena
-/*
+
+#include <stddef.h>
+
+using namespace std;
+
 class CF {
     private:
-        int list_size;
+        size_t list_size;
         int capacity;
 
     public:
@@ -12,5 +16,3 @@ class CF {
         CF(size_t list_size, int capacity, int curr_level);
 
 };
-
-*/

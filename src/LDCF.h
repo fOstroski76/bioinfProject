@@ -1,9 +1,10 @@
 // code written by Elena
 
-
-/*
-#include "CF.h"
+#include <string>
+// #include "CF.h"
 #include "Tree.h"
+
+using namespace std;
 
 class LDCF {
     private:
@@ -33,5 +34,3 @@ class LDCF {
 
         const string get_prefix(const string s, int level);
 };
-
-*/
