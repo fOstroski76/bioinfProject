@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "cuckoofilter.h"
+#include "hashing.h"
+
 
 using namespace std;
 

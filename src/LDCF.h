@@ -1,5 +1,7 @@
 // code written by Elena
 
+
+/*
 #include "CF.h"
 #include "Tree.h"
 
@@ -31,3 +33,5 @@ class LDCF {
 
         const string get_prefix(const string s, int level);
 };
+
+*/

@@ -4,6 +4,7 @@
 
 #include "CuckooFilter.h"
 #include <iostream>
+#include "Hashing.h"
 
 CuckooFilter::CuckooFilter(const size_t single_table_length) {
     this->single_table_length = single_table_length;

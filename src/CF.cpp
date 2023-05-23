@@ -1,5 +1,7 @@
 // code written by Elena
 
+
+/*
 #include "CF.h"
 #include <stdlib.h>
 
@@ -11,3 +13,5 @@ CF::CF(size_t list_size, int capacity, int curr_level) {
     empty = true;
     
 }
+
+*/

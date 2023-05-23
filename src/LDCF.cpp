@@ -3,6 +3,8 @@
 // because of SHA256Init function, has to be run with: g++ -I/usr/include/openssl/ nameOfFile.cpp -lcrypto
 // or need to add "-I/usr/include/openssl/" and "-lcrypto" as arguments in tasks.json if using vscode
 
+
+/*
 #include <iostream>
 #include <string>
 #include <bitset>
@@ -60,3 +62,5 @@ LDCF* LDCF::get_child(LDCF* node, int i, const string prefix) {
 const string LDCF::get_prefix(const string s, int level) {
     // to be implemented
 }
+
+*/
