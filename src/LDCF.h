@@ -1,7 +1,10 @@
 // code written by Elena
 
-#include "CF.h"
+#include <string>
+// #include "CF.h"
 #include "Tree.h"
+
+using namespace std;
 
 class LDCF {
     private:

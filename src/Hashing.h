@@ -12,16 +12,16 @@
 #include <iomanip>
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
-#include "CF.h"
-#include "LDCF.h"
+// #include "CF.h"
+// #include "LDCF.h"
 
 using namespace std;
 
 class Hashing {
     public:
 
-        const string fingerprint(const string str);
+        string fingerprint(const string str);
 
-        const string hash_f(const string str);
+        string hash_f(const string str);
 
 };

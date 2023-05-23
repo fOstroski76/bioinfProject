@@ -14,7 +14,7 @@
 
 using namespace std;
 
-const string Hashing::fingerprint(const string str) {
+string Hashing::fingerprint(const string str) {
     // for now calculated in the same way as hash_f
     unsigned char hash[SHA256_DIGEST_LENGTH];
 
@@ -28,13 +28,13 @@ const string Hashing::fingerprint(const string str) {
     for(int i = 0; i < SHA256_DIGEST_LENGTH; i++){
         ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
     }
-    const string retVal = ss.str();
+    string retVal = ss.str();
 
     cout << "fingerprint function for input " << str << " returning: " << retVal << endl;
     return retVal;
 }
 
-const string Hashing::hash_f(const string str){
+string Hashing::hash_f(const string str){
     unsigned char hash[SHA256_DIGEST_LENGTH];
 
     SHA256_CTX sha256;
@@ -47,7 +47,7 @@ const string Hashing::hash_f(const string str){
     for(int i = 0; i < SHA256_DIGEST_LENGTH; i++){
         ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
     }
-    const string retVal = ss.str();
+    string retVal = ss.str();
     // cout << "hash_f function for input " << str << " returning: " << retVal << endl;
     return retVal;
 }

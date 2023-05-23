@@ -2,7 +2,7 @@
 
 // logic behind defined functions
 
-#include "CuckooFilter.h"
+#include "cuckoofilter.h"
 #include <iostream>
 
 CuckooFilter::CuckooFilter(const size_t single_table_length) {

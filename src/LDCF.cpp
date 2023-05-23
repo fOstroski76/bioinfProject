@@ -13,7 +13,7 @@
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
 #include "LDCF.h"
-#include "CF.h"
+// #include "CF.h"
 
 using namespace std;
 
@@ -43,20 +43,25 @@ CF* LDCF::get_right_child() {
 
 bool LDCF::insert(const string s) {
     // to take the code from insert.cpp
+    return true;
 }
 
 bool LDCF::query(const string s) {
     // to be implemented
+    return true;
 }
 
 bool LDCF::del(const string s) {
     // to be implemented
+    return true;
 }
 
 LDCF* LDCF::get_child(LDCF* node, int i, const string prefix) {
     // to be implemented
+    return node;
 }
 
 const string LDCF::get_prefix(const string s, int level) {
     // to be implemented
+    return s;
 }

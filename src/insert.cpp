@@ -12,7 +12,7 @@
 #include <iomanip>
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
-#include "CF.h"
+// #include "CF.h"
 #include "LDCF.h"
 #include "Hashing.h"
 
@@ -54,10 +54,12 @@ CF* choose_random_CF(int bucket_size) {
     // TODO bucket should be class Bucket, not int
     int index = generate_random_max(bucket_size);
     // get CF from that index
+    return nullptr;
 }
 
 string cut_prefix(string xi_x, string prefix) {
     // to be implemented
+    return "";
 }
 
 bool insert(const string x) {
@@ -71,6 +73,9 @@ bool insert(const string x) {
     cout << "mu_x = " << mu_x << endl;
     string nu_x = to_string(to_bitset(mu_x) ^ to_bitset(hashing.hash_f(xi_x))); // ^ bitwise xor
     cout << "nu_x = " << nu_x << endl;
+
+    unsigned long nu_x_int = stoul(nu_x, nullptr, 0);
+    cout << "nu_x_int = " << nu_x_int << endl; 
 
     string prefix;
     int i = 0;
