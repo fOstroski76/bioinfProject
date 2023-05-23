@@ -2,7 +2,7 @@
 
 // logic behind defined functions
 
-#include "CuckooFilter.h"
+#include "cuckoofilter.h"
 #include <iostream>
 #include "Hashing.h"
 
