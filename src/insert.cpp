@@ -14,6 +14,7 @@
 #include <time.h>       // time
 #include "CF.h"
 #include "LDCF.h"
+#include "Hashing.h"
 
 using namespace std;
 
@@ -32,44 +33,6 @@ bitset<32> to_bitset(string s) {
 
 string to_string(bitset<32> bs) {
     return bs.to_string();
-}
-
-const string fingerprint(const string str) {
-    // for now calculated in the same way as hash_f
-    unsigned char hash[SHA256_DIGEST_LENGTH];
-
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, str.c_str(), str.size());
-    SHA256_Final(hash, &sha256);
-
-    stringstream ss;
-
-    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++){
-        ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
-    }
-    const string retVal = ss.str();
-
-    cout << "fingerprint function for input " << str << " returning: " << retVal << endl;
-    return retVal;
-}
-
-const string hash_f(const string str){
-    unsigned char hash[SHA256_DIGEST_LENGTH];
-
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, str.c_str(), str.size());
-    SHA256_Final(hash, &sha256);
-
-    stringstream ss;
-
-    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++){
-        ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
-    }
-    const string retVal = ss.str();
-    // cout << "hash_f function for input " << str << " returning: " << retVal << endl;
-    return retVal;
 }
 
 int checkCF(int s) {
@@ -101,10 +64,12 @@ bool insert(const string x) {
     LDCF* root; // TODO correctly initialize!
     int current_level = 0;
     LDCF* current_loc = root;
-    string xi_x = fingerprint(x);
-    string mu_x = hash_f(x);
+    Hashing hashing;
+
+    string xi_x = hashing.fingerprint(x);
+    string mu_x = hashing.hash_f(x);
     cout << "mu_x = " << mu_x << endl;
-    string nu_x = to_string(to_bitset(mu_x) ^ to_bitset(hash_f(xi_x))); // ^ bitwise xor
+    string nu_x = to_string(to_bitset(mu_x) ^ to_bitset(hashing.hash_f(xi_x))); // ^ bitwise xor
     cout << "nu_x = " << nu_x << endl;
 
     string prefix;
