@@ -32,6 +32,10 @@ Pripadnost elementa nekom skupu ovom strukturom ne možemo garantirati, jer zbog
 
 \chapter{Opis algoritma}
 
+\begin{flushleft}
+\textbf{Nastanak i evolucija Cuckoo filtera}
+\end{flushleft}
+
 Cuckoo filtere kao ideju za rješavanje problema koji zahtjevaju nisku stopu lažno pozitivnih primjera predstavili su Fan, Kaminsky i Andersen \cite{DBLP:journals/usenix-login/FanAK13}, kao strukturu čija je glavna prednost u odnosu na dotad korištene Bloom filtere sposobnost brisanja. Čak štoviše, uvode cuckoo filtere kao strukturu koja ne samo da omogućuje dinamičko dodavanje i brisanje objekata, već postiže bolje \textit{lookup} performanse, pri tome koristeći manje prostora od dotad optimalnih Bloom filtera.
 Teoriju koju su predložili kasnije su i dokazali \cite{10.1145/2674005.2674994} - cuckoo filteri uistinu su nadmoćna struktura za pohranu velikog broja objekata, kada je nužan uvjet niska stopa lažno pozitivnih primjera. Uz to, dodana su i poboljšanja kako bi se smanjila prostorna složenost, i to djelomičnim sortiranjem bucketa te optimizacijom veličine bucketa - najboljim se pokazao (2, 4)-cuckoo filter, što znači da svaki objekt ima dva moguća kandidata za bucket, a svaki bucket u sebi sadrži podatke o četiri otiska (eng. \textit{fingerprint}). O bucketima je više rečeno u nastavku poglavlja gdje je dan detaljan opis rada algoritma uz primjer.
 
@@ -122,7 +126,100 @@ TODO NAPOMENA: Eventualno doradit opise, dodat usporedbe tih algoritama iz dokum
 \chapter{Analiza}
 \label{Analiza}
 
-Analiza točnosti, vremena izvođenja i utroška memorije za različite testne slučajeve - ovo nosi 3 boda. Testira se na stvarnim podatcima, kod nas E. coli - rezultati prikazani u tablici ili grafu.
+U tekstu koji slijedi dana je analiza točnosti, vremena izvođenja i utroška memorije za različite testne slučajeve. Testovi su izvođeni u nekoliko inačica, koristeći:
+\begin{itemize}
+
+  \item {sintetske podatke - duljina niza od $10^3$ do $10^7$ znakova}
+  \item {stvarne podatke - genom bakterije Escherichia coli}
+
+\end{itemize}
+
+
+\begin{flushleft}
+\textbf{Analiza na sintetskim podatcima}
+\end{flushleft}
+
+\begin{tabular}
+{ |p{0.8cm}||p{4cm}|p{4cm}|p{4cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Ručno generirani nukleotidni sljedovi} \\
+ \hline
+ r. br. testa& vrijeme izvođenja operacije insert \textit{(s)} & vrijeme izvođenja operacije query \textit{(s)} &zauzeće memorije \textit{(MB)}\\
+ \hline
+ 1& AF    &AFG&   004\\
+ 2&   AX  & ALA   &248\\
+ 3&AL & ALB&  008\\
+ 4&DZ & DZA&  012\\
+ 5&   AS  & ASM&016\\
+ 6& AD  & AND   &020\\
+ 7& AO  & AGO&024\\
+ \hline
+\end{tabular}
+
+\vspace{10mm} 
+
+TODO NAPOMENA: Ako budemo koristili više tablica, treba voditi računa o tome gdje će se tablica nalaziti nakon compileiranja i onda ako je potrebno, premjestiti ju tako da ne bude zbunjujuće o kojim se podatcima radi! Također, treba referencirati sve tablice, tako je vjerojatno najsigurnije.
+
+\begin{table}[h!]
+\caption{Rezultati testiranja na sintetskim podatcima}
+\centering
+ \begin{tabular}{|c || c | c | c | c | c|} 
+ \hline
+ 
+\vtop{\hbox{\strut r. br.}\hbox{\strut testa}}&\vtop{\hbox{\strut duljina nuk.}\hbox{\strut slijeda \textit{($10^x$)}}}&\vtop{\hbox{\strut duljina}\hbox{\strut k-mera}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije insert \textit{(s)}}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije query \textit{(s)}}} & \vtop{\hbox{\strut zauzeće} \hbox{\strut memorije \textit{(MB)}}}\\
+ \hline\hline
+ 1 & 3 & 10 & tbd & tbd & tbd \\ 
+ 2 & 3 & 20 & tbd & tbd & tbd \\
+ 3 & 3 & 50 & tbd & tbd & tbd \\
+ 4 & 3 & 100 & tbd & tbd & tbd \\
+ 5 & 3 & 200 & tbd & tbd & tbd \\
+  \hline
+ 6 & 5 & 10 & tbd & tbd & tbd \\ 
+ 7 & 5 & 20 & tbd & tbd & tbd \\
+ 8 & 5 & 50 & tbd & tbd & tbd \\
+ 9 & 5 & 100 & tbd & tbd & tbd \\
+ 10 & 5 & 200 & tbd & tbd & tbd \\ 
+  \hline
+ 11 & 6 & 10 & tbd & tbd & tbd \\ 
+ 12 & 6 & 20 & tbd & tbd & tbd \\
+ 13 & 6 & 50 & tbd & tbd & tbd \\
+ 14 & 6 & 100 & tbd & tbd & tbd \\
+ 15 & 6 & 200 & tbd & tbd & tbd \\
+ \hline
+ \end{tabular}
+ \\[10pt]
+ \caption*{Napomena: Podatci su odvojeni prema duljini nukleotidnog slijeda, a potom prema duljini k-mera. Kategorije vremena izvođenja i zauzeća memorije prikazuju prosječne vrijednosti.}
+\end{table}
+
+\pagebreak
+
+\begin{flushleft}
+\textbf{Analiza na stvarnim podatcima}
+\end{flushleft}
+
+Za analizu na stvarnim podatcima korišten je genom bakterije Esherichia coli. Ova je bakterija modelni organizam te se njezin genom u bioinformatici koristi vrlo često i do danas je u potpunosti sekvenciran za velik dio njezinih sojeva.
+Konkretno, u nastavku su prikazani rezultati primjene algoritma na genom soja GCA 000798515.1, preuzetog iz baze podataka Ensembl Bacteria TODO NAĆI REFERENCU ZA WEB STRANICU.
+
+\begin{table}[h!]
+\caption{Rezultati testiranja na sintetskim podatcima}
+\centering
+ \begin{tabular}{|c || c | c | c | c | c|} 
+ \hline
+ 
+\vtop{\hbox{\strut r. br.}\hbox{\strut testa}}&\vtop{\hbox{\strut duljina nuk.}\hbox{\strut slijeda \textit{($10^x$)}}}&\vtop{\hbox{\strut duljina}\hbox{\strut k-mera}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije insert \textit{(s)}}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije query \textit{(s)}}} & \vtop{\hbox{\strut zauzeće} \hbox{\strut memorije \textit{(MB)}}}\\
+ \hline\hline
+ 1 & 335 & 10 & tbd & tbd & tbd \\ 
+ 2 & 335 & 20 & tbd & tbd & tbd \\
+ 3 & 335 & 50 & tbd & tbd & tbd \\
+ 4 & 335 & 100 & tbd & tbd & tbd \\
+ 5 & 335 & 200 & tbd & tbd & tbd \\
+ \hline
+ \end{tabular}
+ \\[10pt]
+ \caption*{Napomena: Podatci su odvojeni prema duljini nukleotidnog slijeda, a potom prema duljini k-mera. Kategorije vremena izvođenja i zauzeća memorije prikazuju prosječne vrijednosti.}
+\end{table}
+
+
 
 \chapter{Zaključak}
 Zaključak.
