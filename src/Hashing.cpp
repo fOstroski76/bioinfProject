@@ -29,6 +29,8 @@ string Hashing::fingerprint(const string str) {
         ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
     }
     string retVal = ss.str();
+    // string retVal = ss.str().substr(0, 16);
+    // cout << to_string(retVal.length()) << endl;
 
     cout << "fingerprint function for input " << str << " returning: " << retVal << endl;
     return retVal;
@@ -48,6 +50,7 @@ string Hashing::hash_f(const string str){
         ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
     }
     string retVal = ss.str();
+    // string retVal = ss.str().substr(0, 16);
     // cout << "hash_f function for input " << str << " returning: " << retVal << endl;
     return retVal;
 }
