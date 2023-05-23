@@ -17,27 +17,31 @@ int main() {
 
     //filter.printContents();
     
-    filter.insert(3,"ATAT");
-    filter.insert(7,"GTCA");
-    filter.insert(1,"CTCA");
+    filter.insert(3,123);
+    filter.insert(7,456);
+    filter.insert(1,789);
 
     cout << endl;
     cout << "After inserts:" << endl;
 
     filter.printContents();
 
-    filter.deleteItem(3,"ATAT");
-    filter.deleteItem(1,"CGTA");
+    filter.deleteItem(3,123);
+    filter.deleteItem(1,654);
 
     cout << endl;
     cout << "After deletions:" << endl;
 
     filter.printContents();
 
-    if(filter.query(7,"GTCA")) {
+    if(filter.query(7,6)) {
         cout << "Element is present" << endl;
+    } else {
+        cout << "Element is not present" << endl;
     }
-    // Rest of your code
+    
+    cout << filter.generateFirstIndex(123,tableLength) << endl;
+    cout << filter.generateSecondIndex(123,3,tableLength) << endl;
 
     return 0;
 }

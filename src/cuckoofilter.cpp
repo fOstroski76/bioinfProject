@@ -10,8 +10,8 @@ CuckooFilter::CuckooFilter(const size_t single_table_length) {
 
     bucket = new Bucket[single_table_length];
 	for(size_t i = 0; i<single_table_length; i++){
-        string empty = "";
-		bucket[i].stored_kmer = empty;
+        
+		bucket[i].stored_kmer = 0;
         //memset(bucket[i].stored_kmer, 0, sizeof(string));
 	}
     
@@ -28,10 +28,11 @@ void CuckooFilter::printContents() {
     for (size_t i = 0; i < single_table_length; i++) {
         std::cout << "Bucket " << i << " - stored_kmer: " << (bucket[i].stored_kmer) << std::endl;
     }
+    std::cout << endl;
 }
 
 // temporary insert function, needs to calculate hash with hash generating functions
-void CuckooFilter::insert(size_t index,  std::string value) {
+void CuckooFilter::insert(size_t index,  int32_t value) {
     if (index >= single_table_length) {
         std::cout << "Invalid index. Insertion failed." << std::endl;
         return;
@@ -41,22 +42,22 @@ void CuckooFilter::insert(size_t index,  std::string value) {
 }
 
 // temporary delete function , needs to delete as mentioned in header file , should be returning boolean value
-void CuckooFilter::deleteItem(size_t index, const std::string value) {
+void CuckooFilter::deleteItem(size_t index, int32_t value) {
     if (index >= single_table_length) {
         std::cout << "Invalid index. Deletion failed." << std::endl;
         return;
     }
 
     if (bucket[index].stored_kmer == value) {
-        bucket[index].stored_kmer = "";  // Empty the stored value
+        bucket[index].stored_kmer = 0;  // Empty the stored value
         std::cout << "Item at index " << index << " deleted." << std::endl;
     } else {
         std::cout << "Item at index " << index << " does not match the provided value. Deletion failed." << std::endl;
     }
 }
 
-
-bool CuckooFilter::query(size_t index, const std::string value){
+// temporary query function , needs also to be refractored
+bool CuckooFilter::query(size_t index, int32_t  value){
     if (index >= single_table_length) {
         std::cout << "Invalid index. Query failed." << std::endl;
         return false;
@@ -69,4 +70,22 @@ bool CuckooFilter::query(size_t index, const std::string value){
 }
 
 
+int32_t CuckooFilter::generateFirstIndex(int32_t value, size_t single_table_length){
+
+	int32_t index;
+
+    index = value % single_table_length;
+
+    return index;
+	
+}
+
+int32_t CuckooFilter::generateSecondIndex(int32_t value, int32_t fingerprint, size_t single_table_length){ // for now, fingerprint is a fixed inserted value
+
+    int32_t index;
+
+    index = (value + fingerprint) % single_table_length;
+
+    return index;
+}
 
