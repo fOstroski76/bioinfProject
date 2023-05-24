@@ -14,7 +14,7 @@
 using namespace std;
 
 typedef struct{
-	int32_t stored_kmer; // bit_array in their implementation , should be the type of the hash value
+	int32_t stored_kmer[4]; // bit_array in their implementation , should be the type of the hash value
 } Bucket;
 
 class CuckooFilter {
@@ -31,9 +31,9 @@ class CuckooFilter {
 
     void printContents();
 
-    void insert(int32_t value); // will calculate index within a hashing function, now lets pretend it is precalculated
+    bool insert(int32_t value); // will calculate index within a hashing function, now lets pretend it is precalculated
 
-    void deleteItem(int32_t value); // will check if the element from given index is the same, if not, it will try to delete from alternate address if element matches, otherwise it will fail
+    bool deleteItem(int32_t value); // will check if the element from given index is the same, if not, it will try to delete from alternate address if element matches, otherwise it will fail
 
     bool query(int32_t value); // checks if the value is present in the filter; currently doesnt yet calculate index from hash 
 

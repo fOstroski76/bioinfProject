@@ -22,11 +22,14 @@ int main() {
 
     filter.printContents();
     
-    filter.insert(120);
+    filter.insert(121);
     filter.insert(456);
     filter.insert(789);
-    filter.insert(720);
-    filter.insert(880);
+    filter.insert(721);
+    filter.insert(881);
+    filter.insert(61);
+    filter.insert(991);
+    filter.insert(231);
 
     cout << endl;
     cout << "After inserts:" << endl;
@@ -34,7 +37,7 @@ int main() {
     filter.printContents();
 
     filter.deleteItem(789);
-    //filter.deleteItem(720);
+    filter.deleteItem(720);
 
     cout << endl;
     cout << "After deletions:" << endl;
