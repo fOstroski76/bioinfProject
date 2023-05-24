@@ -8,6 +8,7 @@
 #include <iostream>
 #include "cuckoofilter.h"
 #include "hashing.h"
+#include "HashNumber.h"
 
 
 using namespace std;
@@ -22,36 +23,68 @@ int main() {
 
     filter.printContents();
     
-    filter.insert(121);
-    filter.insert(456);
-    filter.insert(789);
-    filter.insert(721);
-    filter.insert(881);
-    filter.insert(61);
-    filter.insert(991);
-    filter.insert(231);
+    filter.insert("ACTGA");
+    filter.insert("TCCTA");
+    filter.insert("GGGTG");
+    filter.insert("CTATT");
+    filter.insert("AACAA");
+    filter.insert("ATCGG");
+    filter.insert("GACTG");
+    filter.insert("GCAAC");
+    filter.insert("TCATT");
+    filter.insert("TGAGT");
+    filter.insert("TGAGG");
+    filter.insert("GTGAA");
+    filter.insert("AAAAA");
+    filter.insert("TTTTT");
+    filter.insert("CCCCC");
+    filter.insert("AACCA");
+    filter.insert("TGTTT");
+    filter.insert("TATAT");
+    filter.insert("AGAGA");
+    filter.insert("AACAA");
 
     cout << endl;
     cout << "After inserts:" << endl;
 
     filter.printContents();
 
-    filter.deleteItem(789);
-    filter.deleteItem(720);
+    filter.deleteItem("TCATT");
+    filter.deleteItem("GCAAC");
 
     cout << endl;
     cout << "After deletions:" << endl;
 
     filter.printContents();
 
-    if(filter.query(720)) {
+    
+    if(filter.query("ACTGA")) {
         cout << "Element is present" << endl;
     } else {
         cout << "Element is not present" << endl;
     }
     
-    cout << filter.generateFirstIndex(123,tableLength) << endl;
-    cout << filter.generateSecondIndex(123,3,tableLength) << endl;
+    
+    //cout << filter.generateFirstIndex(123,tableLength) << endl;
+    //cout << filter.generateSecondIndex(123,3,tableLength) << endl;
 
+    HashNumber hNum;
+    Hashing hashing;
+
+    cout << "Hash testing:" << endl;
+
+    string niz = "ACTGA";
+    uint64_t hashNizaKoBroj = hNum.hash_to_number(niz);
+    cout << hashNizaKoBroj << endl;
+    string opetHash = hNum.number_to_hash(hashNizaKoBroj,6);
+
+    cout << opetHash << endl;
+
+    string niz2 = "ACTGA";
+
+    string mu_x = hashing.hash_f(niz);
+    cout << "mu_x = " << mu_x << endl;
+
+    filter.insert("ACTGA");
     return 0;
 }

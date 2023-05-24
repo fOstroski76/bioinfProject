@@ -52,7 +52,7 @@ string Hashing::fingerprint(const string str) {
 
     string retVal = to_string(hash_substr_int ^ input_substr_int); // ^ bitwise xor
 
-    cout << "fingerprint for input " << str << " is: " << retVal << endl;
+    //cout << "fingerprint for input " << str << " is: " << retVal << endl;
     return retVal;
 }
 
