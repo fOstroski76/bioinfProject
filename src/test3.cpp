@@ -17,10 +17,12 @@ using namespace std;
 
 int main() {
     size_t tableLength;
-    std::cout << "Enter the table length for the CF: ";
+    size_t bucket_size;
+    std::cout << "Enter the table length for the CF and the desired bucket size (capacity: tl * bs): ";
     std::cin >> tableLength;
+    std::cin >> bucket_size;
 
-    CuckooFilter filter(tableLength);
+    CuckooFilter filter(tableLength, bucket_size);
     cout << "At the beginning:" << endl;
 
     filter.printContents();
@@ -96,7 +98,7 @@ int main() {
     VictimGenerator vg;
 
     for (int i = 0; i< 5; i++){
-        int victimIndex = vg.selectVictim();
+        int victimIndex = vg.selectVictim(4);
 
         cout << " " << victimIndex;
     }

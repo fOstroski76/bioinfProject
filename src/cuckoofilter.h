@@ -14,23 +14,31 @@
 using namespace std;
 
 typedef struct{
-	string stored_kmer[4]; // bit_array in their implementation , should be the type of the hash value
+	string stored_kmer[16]; // bit_array in their implementation , should be the type of the hash value
 } Bucket;
 
 class CuckooFilter {
 
     private :
         size_t single_table_length;
+        size_t bucket_size; // MUST BE LOWER THAN 16 TO WORK!
         Bucket* bucket;
+
+        uint32_t mask;
     
     public:
         bool isEmpty;
         bool isFull;
         int capacity;
         int insertedCounter;
+        int level; 
+
+        CuckooFilter* left_child;
+	    CuckooFilter* right_child;
+	    CuckooFilter* parent; // "front"
 
 
-    CuckooFilter(const size_t single_table_length);
+    CuckooFilter(const size_t single_table_length, const size_t bucket_size);
     ~CuckooFilter();
 
     void printContents();
