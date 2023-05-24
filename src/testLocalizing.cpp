@@ -11,10 +11,12 @@ int main() {
 
     string str = "ATGCGNCGCGNCGTANTGNTGAGC";        
     int index = loc.get_location(str);
-    cout << "lokacija = " << index << endl;
+    // cout << "lokacija = " << index << endl;
+    // cout << "str = " << str << endl;
 
-    str = "BTGCGNCGCGNCGTANTGNTGAGC";        
+    str = "BBGCGNCGCGNCGTANTGNTGAGC";        
     index = loc.get_location(str);
-    cout << "lokacija = " << index << endl;       
+    // cout << "lokacija = " << index << endl;
+    // cout << "str = " << str << endl;      
     return 0;
 }

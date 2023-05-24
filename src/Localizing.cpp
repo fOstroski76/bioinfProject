@@ -20,5 +20,7 @@ int Localize::get_location(string &str) {
 
     // cout << bitset<8>(str[0])[0] << endl;
 
+    str.erase(0, 1);
+
     return int(bitset<8>(str[0])[0]);
 }
