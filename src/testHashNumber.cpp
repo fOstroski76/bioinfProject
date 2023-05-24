@@ -20,19 +20,19 @@ void test(const string x) {
     uint64_t n2 = hn.hash_to_number(bca);
     uint64_t n3 = hn.hash_to_number(abb);
 
-    cout << n1 << endl;
-    cout << n2 << endl;
-    cout << n3 << endl;
+    // cout << n1 << endl;
+    // cout << n2 << endl;
+    // cout << n3 << endl;
 
-    cout << hn.number_to_hash(n1, 5) << endl;
-    cout << hn.number_to_hash(n2, 5) << endl;
-    cout << hn.number_to_hash(n3, 5) << endl;
+    // cout << hn.number_to_hash(n1, 5) << endl;
+    // cout << hn.number_to_hash(n2, 5) << endl;
+    // cout << hn.number_to_hash(n3, 5) << endl;
 
 
     string xi_x = hashing.fingerprint(x);
     cout << "xi_x = " << xi_x << endl; 
     string substr = xi_x.substr(0, substr_len);
-    cout << "substr = " << substr << endl;
+    // cout << "substr = " << substr << endl;
     uint64_t xi_x_int = hn.hash_to_number(substr);
     cout << "xi_x_int = " << xi_x_int << endl;
     cout << "number_to_hash = " << hn.number_to_hash(xi_x_int, substr_len) << endl;
@@ -46,6 +46,8 @@ void test(const string x) {
     cout << "number_to_hash = " << hn.number_to_hash(mu_x_int, substr_len) << endl;
     uint64_t mu_x_modulus = mu_x_int % CF_size;
     cout << "mu_x_modulus = " << mu_x_modulus << endl;
+
+    string nu_x = hashing.second_hash_f(mu_x_int, xi_x);
 
     return;
     

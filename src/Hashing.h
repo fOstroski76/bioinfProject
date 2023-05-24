@@ -24,4 +24,6 @@ class Hashing {
 
         string hash_f(const string str);
 
+        string second_hash_f(uint64_t mu_x_int, const string xi_x);
+
 };
