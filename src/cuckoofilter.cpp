@@ -7,6 +7,7 @@
 #include "Hashing.h"
 #include "HashNumber.h"
 #include <algorithm>
+#include "selectvictim.h"
 
 using namespace std;
 
@@ -48,7 +49,7 @@ void CuckooFilter::printContents() {
     std::cout << endl;
 }
 
-// temporary insert function, needs to calculate hash with hash generating functions
+// temporary insert function
 bool CuckooFilter::insert( string value) {
 
     size_t index;
@@ -82,7 +83,7 @@ bool CuckooFilter::insert( string value) {
         //cout << value << " je bio bouncan alternativno!" << endl;
         isEmpty = false;
         insertedCounter += 1;
-        
+
         if (insertedCounter == capacity && insertedCounter != 0){
             isFull = true;
         }
@@ -93,13 +94,13 @@ bool CuckooFilter::insert( string value) {
 
     } 
         
-    cout << "Insert failed! Both locations occupied!" << endl;
+    //cout << "Insert failed! Both locations occupied!" << endl;
     return false;
     
     
 }
 
-// temporary delete function , needs to delete as mentioned in header file , should be returning boolean value
+// temporary delete function 
 bool CuckooFilter::deleteItem( string value) {
     
     size_t index;
@@ -221,3 +222,26 @@ int32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, size
     return alt_index;
 }
 
+
+bool CuckooFilter::tryInsert(string value){
+
+    for(size_t i = 0; i < MAX_RELOCATION; i++){
+        if(insert(value)) {
+            return true;
+        }
+
+        else {
+            Hashing hashing;
+            VictimGenerator vg;
+            int victimIndex = vg.selectVictim();
+            string valueFingerprint = hashing.fingerprint(value);
+            int32_t valueSecondIndex = generateSecondIndex(value,valueFingerprint, single_table_length);
+            string victim = bucket[valueSecondIndex].stored_kmer[victimIndex];
+            bucket[valueSecondIndex].stored_kmer[victimIndex] = value;
+            value = victim;
+            
+        }
+    }
+    isFull = true;
+    return false;
+}

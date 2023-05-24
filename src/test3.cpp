@@ -45,6 +45,8 @@ int main() {
     filter.insert("TATAT");
     filter.insert("AGAGA");
     filter.insert("AACAA");
+    filter.tryInsert("AACAA");
+    filter.tryInsert("AACAA");
 
     cout << endl;
     cout << "After inserts:" << endl;

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string>
 
-#define MAX_RELOCATION 5
+#define MAX_RELOCATION 500
 
 using namespace std;
 
@@ -39,7 +39,9 @@ class CuckooFilter {
 
     bool deleteItem(string value); // will check if the element from given index is the same, if not, it will try to delete from alternate address if element matches, otherwise it will fail
 
-    bool query(string value); // checks if the value is present in the filter; currently doesnt yet calculate index from hash 
+    bool query(string value); // checks if the value is present in the filter; currently doesnt yet calculate index from hash
+
+    bool tryInsert(string value); // will call insert() function and handle victim inserts 
 
     int32_t generateFirstIndex(string value, size_t single_table_length); // temporary functions to generate 1st and 2nd index
 
