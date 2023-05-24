@@ -24,6 +24,10 @@ class CuckooFilter {
         Bucket* bucket;
     
     public:
+        bool isEmpty;
+        bool isFull;
+        int capacity;
+        int insertedCounter;
 
 
     CuckooFilter(const size_t single_table_length);

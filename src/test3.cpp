@@ -9,6 +9,8 @@
 #include "cuckoofilter.h"
 #include "hashing.h"
 #include "HashNumber.h"
+#include "selectvictim.h"
+
 
 
 using namespace std;
@@ -86,5 +88,17 @@ int main() {
     cout << "mu_x = " << mu_x << endl;
 
     filter.insert("ACTGA");
+
+    cout << "Victim gen test:" << endl;
+
+    VictimGenerator vg;
+
+    for (int i = 0; i< 5; i++){
+        int victimIndex = vg.selectVictim();
+
+        cout << " " << victimIndex;
+    }
+    
+
     return 0;
 }

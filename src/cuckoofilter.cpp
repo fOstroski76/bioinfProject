@@ -11,7 +11,12 @@
 using namespace std;
 
 CuckooFilter::CuckooFilter(const size_t single_table_length) {
+
     this->single_table_length = single_table_length;
+    capacity = single_table_length * 4;
+    isEmpty = true;
+    isFull = false;
+    insertedCounter = 0;
 
     bucket = new Bucket[single_table_length];
 	for(size_t i = 0; i<single_table_length; i++){
@@ -60,6 +65,12 @@ bool CuckooFilter::insert( string value) {
     for (size_t j = 0; j < 4; j++){
         if (bucket[index].stored_kmer[j] == "") {  // first calculated position is empty
         bucket[index].stored_kmer[j] = value;
+        isEmpty = false;
+        insertedCounter += 1;
+
+        if (insertedCounter == capacity && insertedCounter != 0){
+            isFull = true;
+        }
         return true;
         }
     }
@@ -69,7 +80,15 @@ bool CuckooFilter::insert( string value) {
         if (bucket[alt_index].stored_kmer[j] == "") {  // second calculated position is empty
         bucket[alt_index].stored_kmer[j] = value;
         //cout << value << " je bio bouncan alternativno!" << endl;
+        isEmpty = false;
+        insertedCounter += 1;
+        
+        if (insertedCounter == capacity && insertedCounter != 0){
+            isFull = true;
+        }
+
         return true;
+        
         }
 
     } 
@@ -99,6 +118,15 @@ bool CuckooFilter::deleteItem( string value) {
         if (bucket[index].stored_kmer[j] == value) {
         bucket[index].stored_kmer[j] = "";  // Empty the stored value
         std::cout << "Item " << value << " at index " << index << " deleted." << std::endl;
+
+        insertedCounter -= 1;
+        if (insertedCounter == 0){
+            isEmpty = true;
+        }
+
+        if (insertedCounter < capacity) {
+            isFull = false;
+        }
         return true;
         }
         
@@ -108,12 +136,22 @@ bool CuckooFilter::deleteItem( string value) {
         if (bucket[alt_index].stored_kmer[j] == value){ // Check the alternate location and empty it
         bucket[alt_index].stored_kmer[j] = "";  
         std::cout << "Item " << value << " was at index " << alt_index << " instead of original " << index << ". Item deleted." << std::endl;
+
+        insertedCounter -= 1;
+        if (insertedCounter == 0){
+            isEmpty = true;
+        }
+
+        if (insertedCounter < capacity) {
+            isFull = false;
+        }
+
         return true;
         }
         
     }
       
-    std::cout <<  "Deletion failed. Element wasnt in any of two locations." << std::endl;
+    //std::cout <<  "Deletion failed. Element wasnt in any of two locations." << std::endl;
     return false;
 }
 
