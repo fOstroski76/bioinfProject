@@ -12,9 +12,10 @@
 #include <iomanip>
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
-// #include "CF.h"
+#include <cmath>
 #include "LDCF.h"
 #include "Hashing.h"
+#include "HashNumber.h"
 
 using namespace std;
 
@@ -62,49 +63,35 @@ string cut_prefix(string xi_x, string prefix) {
     return "";
 }
 
-uint64_t hash_to_number(const string &hash) {
-    uint retVal = 0;
-    for (string::size_type i = 0; i < 64; i++) {
-            retVal += static_cast<int>(hash[i]);
-            // cout << "hash[i] = " << hash[i] << "; adding " << static_cast<int>(hash[i]) << endl;
-    }
-    cout << "retVal of number = " << retVal << endl;
-    return retVal;
-}
-
 bool insert(const string x) {
+
+
     LDCF* root; // TODO correctly initialize!
     int current_level = 0;
     LDCF* current_loc = root;
     Hashing hashing;
+    HashNumber hn;
     uint64_t CF_size = 56;
+    int substr_len = 6;
 
     string xi_x = hashing.fingerprint(x);
     cout << "xi_x = " << xi_x << endl; 
-    uint64_t xi_x_int = hash_to_number(xi_x);
+    string substr = xi_x.substr(0, substr_len);
+    cout << "substr = " << substr << endl;
+    uint64_t xi_x_int = hn.hash_to_number(substr);
     cout << "xi_x_int = " << xi_x_int << endl;
+    cout << "number_to_hash = " << hn.number_to_hash(xi_x_int, substr_len) << endl;
     uint64_t xi_x_modulus = xi_x_int % CF_size;
     cout << "xi_x_modulus = " << xi_x_modulus << endl;
 
-
-    // cout << uint64_t((xi_x.substr(xi_x.length() - CF_size, CF_size)).c_str()) % CF_size << endl;
-    // uint64_t xi_x_modulus = uint64_t((xi_x.substr(xi_x.length() - CF_size, CF_size)).c_str()) % CF_size;
-    // cout << "xi_x_modulus = " << xi_x_modulus << endl;
-
-    // uint64_t xi_x_int = uint64_t(xi_x.c_str());
-    // cout << "xi_x_int = " << to_string(xi_x_int) << endl; 
     string mu_x = hashing.hash_f(x);
     cout << "mu_x = " << mu_x << endl;
-    uint64_t mu_x_int = hash_to_number(mu_x);
-    cout << "mu_x_int" << mu_x_int << endl;
+    uint64_t mu_x_int = hn.hash_to_number(mu_x.substr(0, substr_len));
+    cout << "mu_x_int = " << mu_x_int << endl;
+    cout << "number_to_hash = " << hn.number_to_hash(mu_x_int, substr_len) << endl;
     uint64_t mu_x_modulus = mu_x_int % CF_size;
     cout << "mu_x_modulus = " << mu_x_modulus << endl;
 
-    // cout << uint64_t((mu_x.substr(mu_x.length() - CF_size, CF_size)).c_str()) % CF_size << endl;
-    // uint64_t mu_x_modulus = uint64_t((mu_x.substr(mu_x.length() - CF_size, CF_size)).c_str()) % CF_size;
-    // cout << "mu_x_modulus = " << mu_x_modulus << endl;
-    // uint64_t mu_x_int = uint64_t(mu_x.c_str());
-    // cout << "mu_x_int = " << to_string(mu_x_int) << endl; 
     string nu_x = to_string(to_bitset(mu_x) ^ to_bitset(hashing.hash_f(xi_x))); // ^ bitwise xor
     cout << "nu_x = " << nu_x << endl;
 
@@ -147,3 +134,5 @@ int main() {
     insert(in);
     return 0;
 }
+
+// g++ -I/usr/include/openssl/ insert.cpp LDCF.cpp CF.cpp Hashing.cpp HashNumber.cpp -lcrypto -o insert
