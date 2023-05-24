@@ -41,7 +41,9 @@ Teoriju koju su predložili kasnije su i dokazali \cite{10.1145/2674005.2674994}
 
 Korak dalje učinili su Chen, Liao, Jin i Wu \cite{8117563} uvođenjem dinamičkog cuckoo filtera, koji bi istovremeno zadovoljavao i uvjet da se veličina strukture može fleksibilno mijenjati, ali i da operacija brisanja bude pouzdana. Autori tvrde da ovakva implementacija cuckoo filtera koja u sebi sadrži povezanu listu filtera ostvaruje 75\% smanjeno zauzeće memorije, poboljšanje u konstrukciji strukture od 50\% te ubrzanje u operaciji \textit{query} od čak 80\%. Također, kao dodatnu optimizaciju uvode gornje ograničenje na broj relokacija. Relociranje je vizualizirano u nastavku poglavlja gdje je algoritam primijenjen na jednostavan primjer.
 
-Posljednju nadogradnju ostvarili su Zhang, Chen, Jin i Reviriego \cite{9458864} ističući linearno rastuću računalnu i prostornu složenost s rastom veličine prostora podataka kao glavni nedostatak dinamičkih cuckoo filtera, te uvodeći višerazinsko binarno stablo kao rješenje tog nedostatka, zbog čega se njihova struktura naziva logaritamskim dinamičkim cuckoo filterom, LDCF. S ovim poboljšanjem, operacije dodavanja novih objekata i provjera nalazi li se objekt u strukturi (eng. \textit{membership testing}) od složenosti \textit{O(N)} (gdje je \textit{N} veličina skupa podataka) padaju na složenost \textit{O(1)}. Dodatno, ponudili su i varijantu kompaktnog LDCF-a u kojemu je dodatno smanjeno prostorno zauzeće, na način da se zadržava samo najviša razina cuckoo filtera u višerazinskom stablu. U ovome radu u poglavlju \ref{Analiza} analizirane su performanse vlastite implementacije upravo ove, najviše unaprijeđene varijante cuckoo filera - LDCF.
+Posljednju nadogradnju ostvarili su Zhang, Chen, Jin i Reviriego \cite{9458864} ističući linearno rastuću računalnu i prostornu složenost s rastom veličine prostora podataka kao glavni nedostatak dinamičkih cuckoo filtera, te uvodeći višerazinsko binarno stablo kao rješenje tog nedostatka, zbog čega se njihova struktura naziva logaritamskim dinamičkim cuckoo filterom, LDCF. S ovim poboljšanjem, operacije dodavanja novih objekata i provjera nalazi li se objekt u strukturi (eng. \textit{membership testing}) od složenosti \textit{O(N)} (gdje je \textit{N} veličina skupa podataka) padaju na složenost \textit{O(1)}. Dodatno, ponudili su i varijantu kompaktnog LDCF-a u kojoj je dodatno smanjeno prostorno zauzeće, na način da se zadržava samo najviša razina cuckoo filtera u višerazinskom stablu. U ovome radu u poglavlju \ref{Analiza} analizirane su performanse vlastite implementacije upravo ove, najviše unaprijeđene varijante cuckoo filera - LDCF.
+
+
 
 
 \begin{flushleft}
@@ -72,7 +74,7 @@ U drugom se koraku iz generiranih sažetaka određuje indeks bucketa u koji će 
   \caption{Odabir lokacije za niz AAC - prikaz po uzoru na [2]}
   \label{fig_insert1}
 \end{figure}
-Idući na redu je niz ACT. Nakon generiranja sažetaka smješta se u prazni bucket. Budući da je bucket na jednom od dobivenih indeksa već popunjen, sprema se na drugo, prazno mjesto.
+Idući je na redu niz ACT. Nakon generiranja sažetaka smješta se u prazni bucket. Budući da je bucket na jednom od dobivenih indeksa već popunjen, sprema se na drugo, prazno mjesto.
 \begin{figure}[H]
   \centering
   \setlength{\intextsep}{5pt}
@@ -122,6 +124,17 @@ Može se primijetiti da što je popunjenost veća, raste i vjerojatnost da će d
 
 TODO NAPOMENA: Eventualno doradit opise, dodat usporedbe tih algoritama iz dokumentacije po čemu se razlikuju, ali neznam dal smijem njihove slike (npr. tablice s vremenskim složenostima i to) jer piše u uputama kao da treba dopuštenje autora. 
 
+
+
+\begin{flushleft}
+\textbf{Dodatak opisa rada LDCF}
+\end{flushleft}
+
+
+
+Algoritam LDCF započinje samo jednim CF-om, koji smatramo da je nulta razina budućeg višerazinskog stabla. Pri tome se element dodaje u CF tako da se njegov ranije spomenuti otisak (eng. \textit{fingerprint}) dodaje u bucket. Jednom kada se dogodi da operacija insert ne uspije, smatra se da je CF pun, te se dodaju dva nova CF-a. Kada se dodaje novi objekt u jedan od dva nova CF-a, promatra se prvi bit njegova fingerprinta, te prema tome određuje hoće li biti smješten u lijevi novododani CF, za vrijednost prvog bita fingerprinta jednaku nula, ili desni novododani CF, za slučaj kada je prvi bit njegova fingerprinta jednak jedan. Budući da je time vrijednost prvog bita implicitno zapisana u poziciji elementa u stablu, taj se bit uklanja iz fingerprinta i fingerprint se pohranjuje bez njega. Taj se postupak dalje propagira na niže razine.
+
+Jedna od glavnih prednosti algoritma LDCF nad DCF jest velika mogućnost paralelizacije. Naime, u DCF-u sve operacije \textit{insert} izvode se na istom CF-u, dok su u LDCF-u grane s CF-ima međusobno neovisne zbog opisanog načina kako se konstruiraju, te se zbog toga operacije \textit{insert} mogu izvoditi istovremeno.
  
 \chapter{Analiza}
 \label{Analiza}
