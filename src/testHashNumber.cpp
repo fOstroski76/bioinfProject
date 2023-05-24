@@ -1,3 +1,5 @@
+// code written by Elena
+
 #include <string>
 #include <iostream>
 #include "HashNumber.h"
@@ -45,7 +47,7 @@ void test(const string x) {
     cout << "mu_x_int = " << mu_x_int << endl;
     cout << "number_to_hash = " << hn.number_to_hash(mu_x_int, substr_len) << endl;
     uint64_t mu_x_modulus = mu_x_int % CF_size;
-    cout << "mu_x_modulus = " << mu_x_modulus << endl;
+    cout << "mu_x_modulusssss = " << mu_x_modulus << endl;
 
     string nu_x = hashing.second_hash_f(mu_x_int, xi_x);
 

@@ -1,3 +1,5 @@
+// code written by Elena
+
 #include <string>
 
 using namespace std;

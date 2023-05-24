@@ -32,9 +32,9 @@ bitset<32> to_bitset(string s) {
     return bitset<32>(s);
 }
 
-string to_string(bitset<32> bs) {
-    return bs.to_string();
-}
+// string to_string(bitset<32> bs) {
+//     return bs.to_string();
+// }
 
 int checkCF(int s) {
     // to be implemented
@@ -92,7 +92,7 @@ bool insert(const string x) {
     uint64_t mu_x_modulus = mu_x_int % CF_size;
     cout << "mu_x_modulus = " << mu_x_modulus << endl;
 
-    string nu_x = to_string(to_bitset(mu_x) ^ to_bitset(hashing.hash_f(xi_x))); // ^ bitwise xor
+    string nu_x = hashing.to_string(to_bitset(mu_x) ^ to_bitset(hashing.hash_f(xi_x))); // ^ bitwise xor
     cout << "nu_x = " << nu_x << endl;
 
     unsigned long nu_x_int = stoul(nu_x, nullptr, 2);

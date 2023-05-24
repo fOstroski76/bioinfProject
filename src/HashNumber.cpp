@@ -1,3 +1,5 @@
+// code written by Elena
+
 #include <string>
 #include <stdint.h>
 #include <math.h>

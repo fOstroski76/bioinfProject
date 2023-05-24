@@ -20,6 +20,8 @@ using namespace std;
 class Hashing {
     public:
 
+        string to_string(bitset<32> bs);
+
         string fingerprint(const string str);
 
         string hash_f(const string str);
