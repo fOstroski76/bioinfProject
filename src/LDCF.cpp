@@ -1,4 +1,4 @@
-// code written by Elena
+// code written by Elena & Fran
 
 // because of SHA256Init function, has to be run with: g++ -I/usr/include/openssl/ nameOfFile.cpp -lcrypto
 // or need to add "-I/usr/include/openssl/" and "-lcrypto" as arguments in tasks.json if using vscode
@@ -13,30 +13,31 @@
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
 #include "LDCF.h"
-// #include "CF.h"
+#include "cuckoofilter.h"
 
 using namespace std;
 
 #define MAX_RELOCATION 500
 
-LDCF::LDCF(size_t list_size, size_t bucket_size) {
-    list_size = list_size;
+LDCF::LDCF(int noOfInputs, size_t single_table_length, size_t bucket_size) {
+    single_table_length = single_table_length;
     bucket_size = bucket_size;
+    totalCapacity = noOfInputs;
 
-    node = new CF(list_size, bucket_size);
-    left_child = new CF(list_size, bucket_size);
-    right_child = new CF(list_size, bucket_size);
+    node = new CuckooFilter(single_table_length, bucket_size, 0);
+    left_child = new CuckooFilter(single_table_length, bucket_size, 1);
+    right_child = new CuckooFilter(single_table_length, bucket_size, 1);
     curr_level = curr_level;
 
 }
 
-CF* LDCF::get_node() {
+CuckooFilter* LDCF::get_node() {
     return node;
 }
-CF* LDCF::get_left_child() {
+CuckooFilter* LDCF::get_left_child() {
     return left_child;
 }
-CF* LDCF::get_right_child() {
+CuckooFilter* LDCF::get_right_child() {
     return right_child;
 }
 

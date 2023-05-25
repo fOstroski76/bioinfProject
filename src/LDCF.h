@@ -3,31 +3,38 @@
 #include <string>
 // #include "CF.h"
 #include "Tree.h"
+#include "cuckoofilter.h"
 
 using namespace std;
 
 class LDCF {
     private:
 
+        int totalCapacity;
+        int single_table_length;
+
+
         size_t list_size;
         size_t bucket_size;
 
-        CF* node;
-        CF* left_child;
-        CF* right_child;
+        CuckooFilter* node;
+        CuckooFilter* left_child;
+        CuckooFilter* right_child;
 
     public:
         Tree* tree;
         int curr_level;
 
-        LDCF(size_t list_size, size_t bucket_size);
+        int counterTotal; // counts total amount of stored elements in all cuckoo filters
+
+        LDCF(int totalCapacity, size_t list_size, size_t bucket_size);
         bool insert(const string s);
         bool query(const string s);
         bool del(const string s);
 
-        CF* get_node();
-        CF* get_left_child();
-        CF* get_right_child();
+        CuckooFilter* get_node();
+        CuckooFilter* get_left_child();
+        CuckooFilter* get_right_child();
 
         LDCF* get_child(LDCF* node, int i, const string prefix);
 
