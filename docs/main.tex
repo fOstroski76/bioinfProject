@@ -64,7 +64,7 @@ U prvom koraku algoritma za svaki unos računaju se dva sažetka (eng. \textit{h
   \label{fig_hash}
 \end{figure}
 
-U drugom se koraku iz generiranih sažetaka određuje indeks bucketa u koji će biti smješten ulazni niz. To se najčešće određuje uporabom operacije dijeljenja \textit{modulo} s ukupnim brojem bucketa. Kada se generiaju oba indeksa, element će se spremiti na jedno od dvije lokacije s tim indeksima. Svrha drugog sažetka je smanjenje vjerojatnosti kolizije i potrebe za premještanjem. 
+U drugom se koraku iz generiranih sažetaka određuje indeks bucketa u koji će biti smješten ulazni niz. To se najčešće određuje uporabom operacije dijeljenja \textit{modulo} s ukupnim brojem bucketa. Kada se generiaju oba indeksa, element će se spremiti na jedno od dvije lokacije s tim indeksima. Svrha drugog sažetka je smanjenje vjerojatnosti kolizije i potrebe za premještanjem. Drugi sažetak ovisi i o trenutnoj poziciji elementa kako bi se osiguralo da se alternative razlikuju. 
 
 
 \begin{figure}[H]
@@ -74,7 +74,7 @@ U drugom se koraku iz generiranih sažetaka određuje indeks bucketa u koji će 
   \caption{Odabir lokacije za niz AAC - prikaz po uzoru na [2]}
   \label{fig_insert1}
 \end{figure}
-Idući je na redu niz ACT. Nakon generiranja sažetaka smješta se u prazni bucket. Budući da je bucket na jednom od dobivenih indeksa već popunjen, sprema se na drugo, prazno mjesto.
+Idući je na redu niz ACT. Nakon generiranja sažetaka smješta se u prazni bucket. Ovdje još uvijek nema kolizija.
 \begin{figure}[H]
   \centering
   \setlength{\intextsep}{5pt}
@@ -82,8 +82,8 @@ Idući je na redu niz ACT. Nakon generiranja sažetaka smješta se u prazni buck
   \caption{Odabir lokacije za niz ACT - prikaz po uzoru na [2]}
   \label{fig_insert2}
 \end{figure}
+Za niz CTG dogodila se situacija da je lokacija na koju ga želimo pohraniti već popunjena. Tada se u algoritmu događa "izbacivanje". Obabrani se element izbacuje, umeće se CTG, a za izbačeni element traži se nova lokacija.Novu lokaciju za izbačeni element dobivamo pomoću izračunat h2(CTG).
 
-Isti korak ponavlja se za niz CTG.
 \begin{figure}[H]
   \centering
   \setlength{\intextsep}{5pt}
@@ -92,7 +92,7 @@ Isti korak ponavlja se za niz CTG.
   \label{fig_insert3}
 \end{figure}
 
-Za niz TGA dogodila se situacija da oba pokazivača pokazuju na indekse s već popunjenim bucketima. Tada se u algoritmu događa "izbacivanje". Obabrani se element izbacuje, umeće se TGA, a za izbačeni element traži se nova lokacija. Odabir lokacije razlikuje se od algoritma do algoritma.
+Za niz TGA dogodila se  ista situacija. Za element AAC pomoću h2(AAC) računa se alternativna adresa na koju se pohranjuje.
 
 \begin{figure}[H]
   \centering
@@ -102,13 +102,13 @@ Za niz TGA dogodila se situacija da oba pokazivača pokazuju na indekse s već p
   \label{fig_swap1}
 \end{figure}
 
-Za niz GAC također se mora izvršiti izbacivanje starog elementa. 
+Za niz GAT također se mora izvršiti izbacivanje starog elementa. Međutim, sada je i adresa na koju bi TGA bio premješten već popunjena. Tada se za element ACT ponovno računa nova pozicija koja zbog korištenja trenutnog indeksa u izračunu neće biti identična. 
 
 \begin{figure}[H]
   \centering
   \setlength{\intextsep}{5pt}
   \includegraphics[scale = 0.4]{images/swap2.png}
-  \caption{Izbacivanje ACT i ubacivanje GAC - prikaz po uzoru na [2]}
+  \caption{Izbacivanje TGA i ubacivanje GAT, relociranje ACT - prikaz po uzoru na [2]}
   \label{fig_swap2}
 \end{figure}
 
