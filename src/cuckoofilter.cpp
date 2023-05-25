@@ -19,9 +19,9 @@ CuckooFilter::CuckooFilter(const size_t single_table_length, const size_t bucket
     isEmpty = true;
     isFull = false;
     insertedCounter = 0;
-    parent = NULL;
-    left_child = NULL;
-    right_child = NULL;
+    parent = nullptr;
+    left_child = nullptr;
+    right_child = nullptr;
     level = curlevel; 
 
     bucket = new Bucket[single_table_length];
