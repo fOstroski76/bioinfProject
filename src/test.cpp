@@ -17,9 +17,9 @@ int main() {
 
     int k = 10;
     
-    CuckooFilter filter = CuckooFilter(25,4);
+    CuckooFilter filter = CuckooFilter(65,16);
 
-    std::vector<std::string> kmers = kmerGenFunc::generate_kmers(input_string, k);
+    std::vector<std::string> kmers = kmerGenFunc::generate_kmers(input_string2, k);
     int kmerCounter = 0;
 
     for(const auto& kmer : kmers){

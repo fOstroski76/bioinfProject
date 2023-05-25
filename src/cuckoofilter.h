@@ -35,7 +35,7 @@ class CuckooFilter {
 
         CuckooFilter* left_child;
 	    CuckooFilter* right_child;
-	    CuckooFilter* parent; // "front"
+	    CuckooFilter* parent; 
 
 
     CuckooFilter(const size_t single_table_length, const size_t bucket_size);

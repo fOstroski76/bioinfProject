@@ -240,9 +240,10 @@ bool CuckooFilter::tryInsert(string value){
             VictimGenerator vg;
             int victimIndex = vg.selectVictim(bucket_size);
             string valueFingerprint = hashing.fingerprint(value);
-            int32_t valueSecondIndex = generateSecondIndex(value,valueFingerprint, single_table_length);
-            string victim = bucket[valueSecondIndex].stored_kmer[victimIndex];
-            bucket[valueSecondIndex].stored_kmer[victimIndex] = value;
+            int32_t valueFirstIndex = generateFirstIndex(value,single_table_length);
+            //int32_t valueSecondIndex = generateSecondIndex(value,valueFingerprint, single_table_length);
+            string victim = bucket[valueFirstIndex].stored_kmer[victimIndex];
+            bucket[valueFirstIndex].stored_kmer[victimIndex] = value;
             value = victim;
             
         }
