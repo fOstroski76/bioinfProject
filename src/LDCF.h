@@ -2,7 +2,7 @@
 
 #include <string>
 // #include "CF.h"
-#include "Tree.h"
+// #include "Tree.h"
 #include "cuckoofilter.h"
 
 using namespace std;
@@ -22,13 +22,13 @@ class LDCF {
         CuckooFilter* right_child;
 
     public:
-        Tree* tree;
+        // Tree* tree;
         int curr_level;
 
         int counterTotal; // counts total amount of stored elements in all cuckoo filters
 
         LDCF(int totalCapacity, size_t list_size, size_t bucket_size);
-        bool insert(const string s);
+        bool insert(string s);
         bool query(const string s);
         bool del(const string s);
 

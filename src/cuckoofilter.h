@@ -20,10 +20,9 @@ typedef struct{
 class CuckooFilter {
 
     private :
+        Bucket* bucket;
         size_t single_table_length;
         size_t bucket_size; // MUST BE LOWER THAN 16 TO WORK!
-        Bucket* bucket;
-
         uint32_t mask;
     
     public:
@@ -38,7 +37,7 @@ class CuckooFilter {
 	    CuckooFilter* parent; 
 
 
-    CuckooFilter(const size_t single_table_length, const size_t bucket_size, int curlevel);
+    CuckooFilter(const size_t single_table_length, const size_t bucket_size, int curr_level);
     ~CuckooFilter();
 
     void printContents();
@@ -55,11 +54,16 @@ class CuckooFilter {
 
     int32_t generateSecondIndex(string value, string fingerprint, size_t single_table_length); // fingerprint should be part of the hash,so its data type
 
+    // code written by Elena
     CuckooFilter* get_left_child();
 
     CuckooFilter* get_right_child();
 
     CuckooFilter* get_parent();
+
+    size_t get_single_table_length();
+
+    size_t get_bucket_size();
 
     bool generate_children(const size_t single_table_length, const size_t bucket_size, int curlevel);
 

@@ -11,18 +11,19 @@
 
 using namespace std;
 
-CuckooFilter::CuckooFilter(const size_t single_table_length, const size_t bucket_size, int curlevel) {
+CuckooFilter::CuckooFilter(const size_t single_table_length, const size_t bucket_size, int curr_level) {
 
     this->single_table_length = single_table_length;
     this->bucket_size = bucket_size;
     capacity = single_table_length * bucket_size;
     isEmpty = true;
     isFull = false;
+    // cout << "in CF constructor -> setting isFull to false" << endl;
     insertedCounter = 0;
     parent = nullptr;
     left_child = nullptr;
     right_child = nullptr;
-    level = curlevel; 
+    level = curr_level; 
 
     bucket = new Bucket[single_table_length];
 	for(size_t i = 0; i<single_table_length; i++){
@@ -252,6 +253,7 @@ bool CuckooFilter::tryInsert(string value){
     return false;
 }
 
+// code written by Elena
 
 CuckooFilter* CuckooFilter::get_right_child() {
     return right_child;
@@ -265,6 +267,13 @@ CuckooFilter* CuckooFilter::get_parent() {
     return parent;
 }
 
+size_t CuckooFilter::get_single_table_length() {
+    return single_table_length;
+}
+
+size_t CuckooFilter::get_bucket_size() {
+    return bucket_size;
+}
 
 bool CuckooFilter::generate_children(const size_t single_table_length, const size_t bucket_size, int curlevel) {
     right_child = new CuckooFilter(single_table_length, bucket_size, curlevel + 1);
@@ -278,5 +287,6 @@ bool CuckooFilter::generate_children(const size_t single_table_length, const siz
 string CuckooFilter::CF_string() {
     stringstream ss;
     ss << "CF: empty=" << this->isEmpty << ", full=" << this->isFull << endl;
+    ss << "\t left_child = " << get_left_child() << ", right_child = " << get_right_child() << endl;
     return ss.str();
 }
