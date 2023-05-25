@@ -19,14 +19,13 @@ using namespace std;
 
 #define MAX_RELOCATION 5
 
-LDCF::LDCF(size_t list_size, int capacity, int curr_level) {
+LDCF::LDCF(size_t list_size, size_t bucket_size) {
     list_size = list_size;
-    capacity = capacity;
-    curr_level = curr_level;
+    bucket_size = bucket_size;
 
-    node = new CF(list_size, bucket_capacity, curr_level);
-    left_child = new CF(list_size, bucket_capacity, curr_level+1);
-    right_child = new CF(list_size, bucket_capacity, curr_level+1);
+    node = new CF(list_size, bucket_size);
+    left_child = new CF(list_size, bucket_size);
+    right_child = new CF(list_size, bucket_size);
     curr_level = curr_level;
 
 }

@@ -9,9 +9,8 @@ using namespace std;
 class LDCF {
     private:
 
-        int list_size;
-        int capacity;
-        int bucket_capacity;
+        size_t list_size;
+        size_t bucket_size;
 
         CF* node;
         CF* left_child;
@@ -21,7 +20,7 @@ class LDCF {
         Tree* tree;
         int curr_level;
 
-        LDCF(size_t list_size, int capacity, int curr_level);
+        LDCF(size_t list_size, size_t bucket_size);
         bool insert(const string s);
         bool query(const string s);
         bool del(const string s);
