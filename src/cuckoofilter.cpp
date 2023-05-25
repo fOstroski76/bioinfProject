@@ -11,7 +11,7 @@
 
 using namespace std;
 
-CuckooFilter::CuckooFilter(const size_t single_table_length, const size_t bucket_size) {
+CuckooFilter::CuckooFilter(const size_t single_table_length, const size_t bucket_size, int curlevel) {
 
     this->single_table_length = single_table_length;
     this->bucket_size = bucket_size;
@@ -22,7 +22,7 @@ CuckooFilter::CuckooFilter(const size_t single_table_length, const size_t bucket
     parent = NULL;
     left_child = NULL;
     right_child = NULL;
-    level = 0; // currLevel treba biti
+    level = curlevel; 
 
     bucket = new Bucket[single_table_length];
 	for(size_t i = 0; i<single_table_length; i++){
@@ -250,4 +250,33 @@ bool CuckooFilter::tryInsert(string value){
     }
     isFull = true;
     return false;
+}
+
+
+CuckooFilter* CuckooFilter::get_right_child() {
+    return right_child;
+}
+
+CuckooFilter* CuckooFilter::get_left_child() {
+    return left_child;
+}
+
+CuckooFilter* CuckooFilter::get_parent() {
+    return parent;
+}
+
+
+bool CuckooFilter::generate_children(const size_t single_table_length, const size_t bucket_size, int curlevel) {
+    right_child = new CuckooFilter(single_table_length, bucket_size, curlevel + 1);
+    right_child->parent = this;
+    left_child = new CuckooFilter(single_table_length, bucket_size, curlevel + 1);
+    left_child->parent = this;
+    return true;
+}
+
+
+string CuckooFilter::CF_string() {
+    stringstream ss;
+    ss << "CF: empty=" << this->isEmpty << ", full=" << this->isFull << endl;
+    return ss.str();
 }

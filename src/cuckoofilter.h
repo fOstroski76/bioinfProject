@@ -38,7 +38,7 @@ class CuckooFilter {
 	    CuckooFilter* parent; 
 
 
-    CuckooFilter(const size_t single_table_length, const size_t bucket_size);
+    CuckooFilter(const size_t single_table_length, const size_t bucket_size, int curlevel);
     ~CuckooFilter();
 
     void printContents();
@@ -54,6 +54,16 @@ class CuckooFilter {
     int32_t generateFirstIndex(string value, size_t single_table_length); // temporary functions to generate 1st and 2nd index
 
     int32_t generateSecondIndex(string value, string fingerprint, size_t single_table_length); // fingerprint should be part of the hash,so its data type
+
+    CuckooFilter* get_left_child();
+
+    CuckooFilter* get_right_child();
+
+    CuckooFilter* get_parent();
+
+    bool generate_children(const size_t single_table_length, const size_t bucket_size, int curlevel);
+
+    string CF_string();
 };
 
 #endif // CUCKOOFILTER_H

@@ -17,7 +17,7 @@
 
 using namespace std;
 
-#define MAX_RELOCATION 5
+#define MAX_RELOCATION 500
 
 LDCF::LDCF(size_t list_size, size_t bucket_size) {
     list_size = list_size;
