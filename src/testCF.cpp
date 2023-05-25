@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include "CF.h"
 #include "Localizing.h"
 
 using namespace std;
@@ -21,7 +20,7 @@ int main() {
     }
 
     CF* left_child = cf.get_left_child();
-    cout << "left_child: " << &left_child << endl;
+    cout << "left_child: " << left_child << endl;
 
     cout << "cf: " << &cf << endl;
     cout << "left_child: " << cf.get_left_child() << endl;
@@ -38,14 +37,25 @@ int main() {
     CF* left_c_of_left_c = left_child->get_left_child();
     CF* right_c_of_left_c = left_child->get_right_child();
 
-    cout << "left_child's left child" << left_c_of_left_c << endl;
-    cout << "left_child's right child" << right_c_of_left_c << endl;
+    cout << "left_child's left child: " << left_c_of_left_c << endl;
+    cout << "left_child's right child: " << right_c_of_left_c << endl;
 
+    right_c_of_left_c->generate_children(list_size, bucket_size);
+    CF* left_c_of_right_c_of_left_c = right_c_of_left_c->get_left_child();
 
     Localize loc;
     string fgpt = "abca";
     loc.recover_xi_x(fgpt, left_child);
 
+    string fgpt2 = "aaa";
+    loc.recover_xi_x(fgpt2, left_c_of_left_c);
+
+    string fgpt3 = "bbb";
+    // cout << "pozivam recover s RcoLc: " << right_c_of_left_c << endl;
+    loc.recover_xi_x(fgpt3, right_c_of_left_c);
+
+    string fgpt4 = "---";
+    loc.recover_xi_x(fgpt4, left_c_of_right_c_of_left_c);
 
     return 0;
 }

@@ -16,6 +16,7 @@ CF::CF(size_t list_size, size_t bucket_size) {
     empty = true;
     right_child = nullptr;
     left_child = nullptr;
+    parent = nullptr;
 }
 
 CF* CF::get_right_child() {
@@ -27,14 +28,14 @@ CF* CF::get_left_child() {
 }
 
 CF* CF::get_parent() {
-    return parent_node;
+    return parent;
 }
 
 bool CF::generate_children(size_t list_size, size_t bucket_size) {
     right_child = new CF(list_size, bucket_size);
-    right_child->parent_node = this;
+    right_child->parent = this;
     left_child = new CF(list_size, bucket_size);
-    left_child->parent_node = this;
+    left_child->parent = this;
     return true;
 }
 

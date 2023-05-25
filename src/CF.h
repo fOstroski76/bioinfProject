@@ -10,7 +10,7 @@ class CF {
         int capacity;
         CF* right_child;
         CF* left_child;
-        CF* parent_node;
+        CF* parent;
         // friend ostream& operator<<(ostream &s, const CF &cf);
 
     public:

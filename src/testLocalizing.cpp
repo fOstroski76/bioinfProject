@@ -20,3 +20,5 @@ int main() {
     // cout << "str = " << str << endl;      
     return 0;
 }
+
+// g++ -I/usr/include/openssl/ testLocalizing.cpp Localizing.cpp CF.cpp -lcrypto -o testLocalizing

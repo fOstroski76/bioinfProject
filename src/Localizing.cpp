@@ -30,16 +30,27 @@ void Localize::recover_xi_x(string &str, CF* node) {
     // not properly working but pushed so other can work with other code
     string up_tree = "";
     CF* parent = node->get_parent();
+    // cout << "ulazni node je " << node << endl;
+    // cout << "ulazni parent je " << parent << endl;
     while (parent != nullptr) {
-        if (node == node->get_left_child()) {
-            up_tree += '0';
+        if (node == parent->get_left_child()) {
+            up_tree = '0' + up_tree;
+            // cout << "adding 0" << endl;
+        }
+        else if (node == parent->get_right_child()) {
+            up_tree = '1' + up_tree;
+            // cout << "adding 1" << endl;
         }
         else {
-            up_tree += '1';
+            cout << "nesto je krivo!" << endl;
         }
+        node = parent;
+        // cout << "node je sada " << &node << endl;
         parent = parent->get_parent();
+        // cout << "parent je sada " << &parent << endl;
     }
+    // cout << "up_tree: " << up_tree << endl;
     str.insert(0, up_tree);
-    cout << str << endl;
+    cout << "whole fingerprint is: " << str << endl;
     return;
 }
