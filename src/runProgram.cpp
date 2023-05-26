@@ -57,16 +57,35 @@ int main(){
 
     std::string path = "raw_input_100.txt"; 
     std::string content = get_from_file(path);
+    
+    std::string path_of_synthetic_inputs = "input_sythetic_100.txt";
+    std::string syntheticContent = get_from_file(path_of_synthetic_inputs);
 
 
     std::vector<std::string> result = generate_kmers(content, k);
+    std::vector<std::string> resultSynt = generate_kmers(syntheticContent, k);
     for (const auto& kmer : result) {
 
         logDynCuckooFilter->insert(kmer);
         //std::cout << kmer << " " << endl;
     }
 
+    cout << "Querying over same elements that were inserted..." << endl << endl;
+
     for (const auto& kmer : result) {
+
+        if(logDynCuckooFilter->query(kmer)){
+            cout << "K-mer: " << kmer << " found: yes" << endl; 
+        } else {
+            cout << "K-mer: " << kmer << " found: no" << endl; 
+        }
+        //std::cout << kmer << " " << endl;
+    }
+    std::cout << std::endl << endl;
+
+    cout << "Querying randomly generated input..." << endl << endl;
+
+    for (const auto& kmer : resultSynt) {
 
         if(logDynCuckooFilter->query(kmer)){
             cout << "K-mer: " << kmer << " found: yes" << endl; 
