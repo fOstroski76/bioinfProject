@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "generatekmers_h" 
+#include "generatekmers.h" 
 
 using namespace std;
 
