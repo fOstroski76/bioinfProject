@@ -233,6 +233,8 @@ int main() {
 
     if(ldcf->query("elenazelenablablabla")){
         cout << ("Nađen ekfs2da45ekfnek") << endl;
+    } else {
+        cout << "Elenazelenanešto not found" << endl;
     }
 
     if(ldcf->del(s1)){
