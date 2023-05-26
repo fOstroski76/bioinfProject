@@ -122,8 +122,6 @@ Za niz GAT također se mora izvršiti izbacivanje starog elementa. Međutim, sad
 
 Može se primijetiti da što je popunjenost veća, raste i vjerojatnost da će doći do izbacivanja i relokacije starijih elemenata u filteru. Dogodit će se situacije da će element koji se premješta biti premješten na već popunjeni bucket. U tom slučaju prijašnji element će se premjestiti, te će postupak nastaviti sve dok se ne pronađe slobodno mjesto ili se dosegne maksimalan broj operacija premještanja. U slučaju da se dosegne maksimalan broj, to je obično indikator skore popunjenosti filtera. U tom slučaju mogu se poduzeti razne akcije, koje su ponovno različite za svaku implementaciju filtera. \\
 
-TODO NAPOMENA: Eventualno doradit opise, dodat usporedbe tih algoritama iz dokumentacije po čemu se razlikuju, ali neznam dal smijem njihove slike (npr. tablice s vremenskim složenostima i to) jer piše u uputama kao da treba dopuštenje autora. 
-
 
 
 \begin{flushleft}
@@ -132,9 +130,18 @@ TODO NAPOMENA: Eventualno doradit opise, dodat usporedbe tih algoritama iz dokum
 
 
 
-Algoritam LDCF započinje samo jednim CF-om, koji smatramo da je nulta razina budućeg višerazinskog stabla. Pri tome se element dodaje u CF tako da se njegov ranije spomenuti otisak (eng. \textit{fingerprint}) dodaje u bucket. Jednom kada se dogodi da operacija insert ne uspije, smatra se da je CF pun, te se dodaju dva nova CF-a. Kada se dodaje novi objekt u jedan od dva nova CF-a, promatra se prvi bit njegova fingerprinta, te prema tome određuje hoće li biti smješten u lijevi novododani CF, za vrijednost prvog bita fingerprinta jednaku nula, ili desni novododani CF, za slučaj kada je prvi bit njegova fingerprinta jednak jedan. Budući da je time vrijednost prvog bita implicitno zapisana u poziciji elementa u stablu, taj se bit uklanja iz fingerprinta i fingerprint se pohranjuje bez njega. Taj se postupak dalje propagira na niže razine.
+Algoritam LDCF započinje samo jednim CF-om, koji smatramo da je nulta razina budućeg višerazinskog stabla. Pri tome se element dodaje u CF tako da se njegov ranije spomenuti otisak (eng. \textit{fingerprint}) dodaje u bucket. Jednom kada se dogodi da operacija \textit{insert} ne uspije, smatra se da je CF pun, te se dodaju dva nova CF-a. Kada se dodaje novi objekt u jedan od dva nova CF-a, promatra se prvi bit njegova fingerprinta, te prema tome određuje hoće li biti smješten u lijevi novododani CF, za vrijednost prvog bita fingerprinta jednaku nula, ili desni novododani CF, za slučaj kada je prvi bit njegova fingerprinta jednak jedan. Budući da je time vrijednost prvog bita implicitno zapisana u poziciji elementa u stablu, taj se bit uklanja iz fingerprinta i fingerprint se pohranjuje bez njega. Taj se postupak dalje propagira na niže razine.
 
-Jedna od glavnih prednosti algoritma LDCF nad DCF jest velika mogućnost paralelizacije. Naime, u DCF-u sve operacije \textit{insert} izvode se na istom CF-u, dok su u LDCF-u grane s CF-ima međusobno neovisne zbog opisanog načina kako se konstruiraju, te se zbog toga operacije \textit{insert} mogu izvoditi istovremeno.
+Jedna od glavnih prednosti algoritma LDCF nad DCF jest velika mogućnost paralelizacije. Naime, u DCF-u sve operacije \textit{insert} izvode se na istom CF-u, dok su u LDCF-u grane s CF-ima međusobno neovisne zbog opisanog načina kako se konstruiraju, te se zbog toga operacije \textit{insert} mogu izvoditi istovremeno na neovisnim granama.
+
+
+\begin{flushleft}
+\textbf{O implementaciji}
+\end{flushleft}
+
+Za implementaciju je korišten programski jezik C++. Ulazni podatci učitavaju se iz datoteke i rezultati se ispisuju u vanjsku izlaznu datoteku. Što se tiče vanjskih knjižnica, korišten je OpenSSL, knjižnica koja je uključena u bio-linux.
+
+Prijašnji radovi \cite{10.1145/3485983.3494852} sugeriraju da je četiri unosa po bucketu optimalna veličina bucketa, ali u ovoj je konkretnoj implementaciji odabrana konfiguracija s bucketom koji prihvaća maksimalno osam unosa. Tesitiranjem različitih varijacija, zaključeno je da je za takvu  implementaciju optimalna manja veličina cuckoo filtera od onih koje predlažu drugi radovi - manji broj bucketa po cuckoo filteru - konkretno, u testovima navedenima u analizi, korišteni su cuckoo filteri koji sadrže šesnaest bucketa.
  
 \chapter{Analiza}
 \label{Analiza}
@@ -142,8 +149,8 @@ Jedna od glavnih prednosti algoritma LDCF nad DCF jest velika mogućnost paralel
 U tekstu koji slijedi dana je analiza točnosti, vremena izvođenja i utroška memorije za različite testne slučajeve. Testovi su izvođeni u nekoliko inačica, koristeći:
 \begin{itemize}
 
-  \item {sintetske podatke - duljina niza od $10^3$ do $10^7$ znakova}
-  \item {stvarne podatke - genom bakterije Escherichia coli}
+  \item {sintetske podatke - nizovi duljine od $10^3$ do $10^7$ znakova}
+  \item {stvarne podatke - genom bakterije Escherichia coli.}
 
 \end{itemize}
 
@@ -211,7 +218,7 @@ TODO NAPOMENA: Ako budemo koristili više tablica, treba voditi računa o tome g
 \end{flushleft}
 
 Za analizu na stvarnim podatcima korišten je genom bakterije Esherichia coli. Ova je bakterija modelni organizam te se njezin genom u bioinformatici koristi vrlo često i do danas je u potpunosti sekvenciran za velik dio njezinih sojeva.
-Konkretno, u nastavku su prikazani rezultati primjene algoritma na genom soja GCA 000798515.1, preuzetog iz baze podataka Ensembl Bacteria TODO NAĆI REFERENCU ZA WEB STRANICU.
+Konkretno, u nastavku su prikazani rezultati primjene algoritma na genom soja GCA 000798515.1, preuzetog iz baze podataka Ensembl Bacteria \cite{ensembl_bacteria}.
 
 \begin{table}[h!]
 \caption{Rezultati testiranja na sintetskim podatcima}
