@@ -156,95 +156,63 @@ U tekstu koji slijedi dana je analiza točnosti, vremena izvođenja i utroška m
 
 
 \begin{flushleft}
-\textbf{Analiza na sintetskim podatcima}
+\textbf{Analiza na sintetskim i stvarnim podatcima}
 \end{flushleft}
 
-\begin{tabular}
-{ |p{0.8cm}||p{4cm}|p{4cm}|p{4cm}|  }
- \hline
- \multicolumn{4}{|c|}{Ručno generirani nukleotidni sljedovi} \\
- \hline
- r. br. testa& vrijeme izvođenja operacije insert \textit{(s)} & vrijeme izvođenja operacije query \textit{(s)} &zauzeće memorije \textit{(MB)}\\
- \hline
- 1& AF    &AFG&   004\\
- 2&   AX  & ALA   &248\\
- 3&AL & ALB&  008\\
- 4&DZ & DZA&  012\\
- 5&   AS  & ASM&016\\
- 6& AD  & AND   &020\\
- 7& AO  & AGO&024\\
- \hline
-\end{tabular}
-
-\vspace{10mm} 
-
-TODO NAPOMENA: Ako budemo koristili više tablica, treba voditi računa o tome gdje će se tablica nalaziti nakon compileiranja i onda ako je potrebno, premjestiti ju tako da ne bude zbunjujuće o kojim se podatcima radi! Također, treba referencirati sve tablice, tako je vjerojatno najsigurnije.
-
-\begin{table}[h!]
-\caption{Rezultati testiranja na sintetskim podatcima}
-\centering
- \begin{tabular}{|c || c | c | c | c | c|} 
- \hline
- 
-\vtop{\hbox{\strut r. br.}\hbox{\strut testa}}&\vtop{\hbox{\strut duljina nuk.}\hbox{\strut slijeda \textit{($10^x$)}}}&\vtop{\hbox{\strut duljina}\hbox{\strut k-mera}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije insert \textit{(s)}}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije query \textit{(s)}}} & \vtop{\hbox{\strut zauzeće} \hbox{\strut memorije \textit{(MB)}}}\\
- \hline\hline
- 1 & 3 & 10 & tbd & tbd & tbd \\ 
- 2 & 3 & 20 & tbd & tbd & tbd \\
- 3 & 3 & 50 & tbd & tbd & tbd \\
- 4 & 3 & 100 & tbd & tbd & tbd \\
- 5 & 3 & 200 & tbd & tbd & tbd \\
-  \hline
- 6 & 5 & 10 & tbd & tbd & tbd \\ 
- 7 & 5 & 20 & tbd & tbd & tbd \\
- 8 & 5 & 50 & tbd & tbd & tbd \\
- 9 & 5 & 100 & tbd & tbd & tbd \\
- 10 & 5 & 200 & tbd & tbd & tbd \\ 
-  \hline
- 11 & 6 & 10 & tbd & tbd & tbd \\ 
- 12 & 6 & 20 & tbd & tbd & tbd \\
- 13 & 6 & 50 & tbd & tbd & tbd \\
- 14 & 6 & 100 & tbd & tbd & tbd \\
- 15 & 6 & 200 & tbd & tbd & tbd \\
- \hline
- \end{tabular}
- \\[10pt]
- \caption*{Napomena: Podatci su odvojeni prema duljini nukleotidnog slijeda, a potom prema duljini k-mera. Kategorije vremena izvođenja i zauzeća memorije prikazuju prosječne vrijednosti.}
-\end{table}
-
-\pagebreak
-
-\begin{flushleft}
-\textbf{Analiza na stvarnim podatcima}
-\end{flushleft}
 
 Za analizu na stvarnim podatcima korišten je genom bakterije Esherichia coli. Ova je bakterija modelni organizam te se njezin genom u bioinformatici koristi vrlo često i do danas je u potpunosti sekvenciran za velik dio njezinih sojeva.
 Konkretno, u nastavku su prikazani rezultati primjene algoritma na genom soja GCA 000798515.1, preuzetog iz baze podataka Ensembl Bacteria \cite{ensembl_bacteria}.
 
+
+Prvi je test proveden na način da je u ulaznu datoteku upisan nukleotidni slijed duljine 100 nukleotida, uzet iz stvarnog genoma ranije spomenutog soja bakterije Escherichia coli. \textit{K}, veličina k-mera, postavljen je na duljinu od pet nukleotida te su najprije pozvane metode \textit{insert} nad LDCF-om za sve k-mere učitane iz ulazne datoteke. Budući da je slijed duljine 1000, a k-mer duljine 5, broj svih k-mera u slijedu je razlika duljine slijeda i duljine k-mera uvećana za jedan, dakle 96. Nakon dodavanja svih k-mera u LDCF (točnije bi bilo reći da se poziva metoda \textit{insert} nad svim k-merima, ali budući da su svi uspješno dodani, jednostavno je rečeno da su dodani svi k-meri), ti su isti k-meri potraženi (metoda \textit{query}) u generiranoj strukturi LDCF. Kako je i očekivano, svi su k-meri pronađeni u LDCF-u, što znači da nije bilo \textit{false negative} rezultata. To je jedan od najvažnijih kriterija rada LDCF-a. Nakon što je potvrđeno da nema lažno negativnih upita, generirani su sintetski podatci na način da su nasumično odabrani nukleotidi tako da se konačno generira niz od 100 nukleotida. Ti su sintetski podatci potom potraženi u generiranom LDCF-u. Od njih 96, njih je 10 pronađeno u LDCF-u. Ručnom provjerom dokazano je da se svih 10 uistinu nalazilo u stvarnom genomu iz kojega je generiran LDCF, što pokazuje da implementacija radi na malenim skupovima.
+
+Na sličan način provedeni su i ostali testovi, koji su zbog jednostavnosti i preglednosti prikazani tablično.
+
 \begin{table}[h!]
-\caption{Rezultati testiranja na sintetskim podatcima}
+\caption{Rezultati testiranja na stvarnim i sintetskim podatcima}
 \centering
- \begin{tabular}{|c || c | c | c | c | c|} 
+ \begin{tabular}{|c || c | c | c | c |} 
  \hline
  
-\vtop{\hbox{\strut r. br.}\hbox{\strut testa}}&\vtop{\hbox{\strut duljina nuk.}\hbox{\strut slijeda \textit{($10^x$)}}}&\vtop{\hbox{\strut duljina}\hbox{\strut k-mera}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije insert \textit{(s)}}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije query \textit{(s)}}} & \vtop{\hbox{\strut zauzeće} \hbox{\strut memorije \textit{(MB)}}}\\
+\vtop{\hbox{\strut r. br.}\hbox{\strut testa}}&\vtop{\hbox{\strut dulj. ul. nuk.}\hbox{\strut slijeda \textit{($10^x$)}}}&\vtop{\hbox{\strut duljina}\hbox{\strut k-mera}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije insert \textit{(s)}}}&\vtop{\hbox{\strut vrijeme izvođenja}\hbox{\strut operacije query \textit{(s)}}}\\
  \hline\hline
- 1 & 335 & 10 & tbd & tbd & tbd \\ 
- 2 & 335 & 20 & tbd & tbd & tbd \\
- 3 & 335 & 50 & tbd & tbd & tbd \\
- 4 & 335 & 100 & tbd & tbd & tbd \\
- 5 & 335 & 200 & tbd & tbd & tbd \\
+ 1 & 3 & 10 & 0.1139 & 0.0893 \\ 
+ 2 & 3 & 25 & 0.0932 & 0.0900 \\
+ 3 & 3 & 50 & 0.0962 & 0.0878 \\
+ 4 & 3 & 100 & 0.1141 & 0.0869 \\
+ 5 & 3 & 200 & 0.1013 & 0.0761 \\
+  \hline
+ 6 & 3.698 & 5 &  0.7838 & 0.4435 \\ 
+ 7 & 3.698 & 20 & 3e-06 &  0.2798 \\
+ 8 & 3.698 & 50 & 2e-06 & 0.2936 \\
+ 9 & 3.698 & 100 & 1e-06 & 0.2060 \\
+ 10 & 3.698 & 200 & 2e-06 & 0.2021 \\ 
+  \hline
+ 11 & 4.398 & 5 & 7.7431 &  2.2935 \\ 
+ 12 & 4.398 & 20 & 3.12 & 3.87 \\
+ 13 & 4.398 & 50 & 3.06 & 3.84 \\
+ \hline
+ 11 & 4.699 & 5 & 23.2000 &  4.6064 \\ 
+ 12 & 4.699 & 50 & 28.6508 & 55.4289 \\
+ \hline
+ 11 & 5.398 & 5 & 23.2000 &  4.6064 \\ 
  \hline
  \end{tabular}
  \\[10pt]
- \caption*{Napomena: Podatci su odvojeni prema duljini nukleotidnog slijeda, a potom prema duljini k-mera. Kategorije vremena izvođenja i zauzeća memorije prikazuju prosječne vrijednosti.}
+ \caption*{Napomena: Podatci su odvojeni prema duljini nukleotidnog slijeda, a potom prema duljini k-mera. Kategorija vremena izvođenja izračunata je preko biblioteke ctime.}
 \end{table}
+
+Zauzeće memorije procjenjuje se prema broju zauzetih cuckoo filtera, kao i broju bucketa koji svaki cuckoo filter sadrži, i to prema sljedećoj formuli:
+
+(((floor(Bajtovi inputa / (bucketsize * singletablelength)) +1) * bucketsize * singletablelength ) / 1024 ) 1024 (MB)
+
+\pagebreak
 
 
 
 \chapter{Zaključak}
-Zaključak.
 
-TODO Komentirati kako naša implementacija radi u odnosu na predloženu, komentirati analizu.
+Logaritamski dinamički cuckoo filter kao struktura uistinu je nadmoćna nad svojim ranijim varijantama. Ne samo da omogućuje efikasno pohranjivanje novih unosa, već i njihovo uklanjanje iz strukture LDCF, što ju znatno ističe nad ranijim strukturama korištenima u bioinformatici, poput Bloom filtera. Vlastita implementacija ostvaruje zadovoljavajuće rezultate kako na stvarnim, tako i na sintetskim podatcima. Uspješno pohranjuje sljedove duge do testiranih milijun nukleotida dugih sljedova, 
 
 \bibliography{literatura}
 \bibliographystyle{fer}
