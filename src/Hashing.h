@@ -22,7 +22,7 @@ class Hashing {
 
         string to_string(bitset<32> bs);
 
-        string fingerprint(const string str);
+        string fingerprint(string str);
 
         string hash_f(const string str);
 

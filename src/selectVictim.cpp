@@ -22,7 +22,7 @@ int VictimGenerator::selectVictim(int bucket_size) {
     // code written by Elena
 
     srand(time(NULL));
-    cout << "bucket_size = " << bucket_size << endl;
+    // cout << "bucket_size = " << bucket_size << endl;
 
     return (rand() % bucket_size);
 }

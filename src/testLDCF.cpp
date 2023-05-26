@@ -6,17 +6,17 @@
 
 int main() {
     int total_capacity = 40;
-    int CF_size = 10;
+    int CF_size = 4;
     int bucket_size = 4;
 
     LDCF* ldcf = new LDCF(total_capacity, CF_size, bucket_size);
-    cout << "ldcf.stl " << ldcf->get_single_table_length() << endl;
+    // cout << "ldcf.stl " << ldcf->get_single_table_length() << endl;
     CuckooFilter* node = ldcf->get_node();
-    cout << "prvi" << endl;
+    // cout << "prvi" << endl;
 
     // left and right child in LDCF class not needed?!    
     CuckooFilter* left_child = ldcf->get_left_child();
-    cout << "drugi" << endl;
+    // cout << "drugi" << endl;
     CuckooFilter* right_child = ldcf->get_right_child();
     cout << "treći" << endl;
 
@@ -99,6 +99,92 @@ int main() {
     ldcf->insert(s1);
     s1 = "ekfekfnek";
     ldcf->insert(s1);
+    s1 = "fffsff";
+    ldcf->insert(s1);
+    s1 = "ekfsekfnek";
+    ldcf->insert(s1);
+    s1 = "fff4sdaff";
+    ldcf->insert(s1);
+    s1 = "ek4fsdaekfnek";
+    ldcf->insert(s1);
+    s1 = "f4ff2ff";
+    ldcf->insert(s1);
+    s1 = "ekf2e4kfnek";
+    ldcf->insert(s1);
+    s1 = "fff24sff";
+    ldcf->insert(s1);
+    s1 = "2dd4dd";
+    ldcf->insert(s1);
+    s1 = "fffs2daf4f";
+    ldcf->insert(s1);
+    s1 = "ekfs2da4ekfnek";
+    ldcf->insert(s1);
+    s1 = "ekfekf4nek";
+    ldcf->insert(s1);
+    s1 = "fffsf4f";
+    ldcf->insert(s1);
+    s1 = "ekfsekf4nek";
+    ldcf->insert(s1);
+    s1 = "fffsda4ff";
+    ldcf->insert(s1);
+    s1 = "ekfsda4ekfnek";
+    ldcf->insert(s1);
+    s1 = "fff2f4f";
+    ldcf->insert(s1);
+    s1 = "ekf2ekf4nek";
+    ldcf->insert(s1);
+    s1 = "fff2sf4f";
+    ldcf->insert(s1);
+    s1 = "2ddd4d";
+    ldcf->insert(s1);
+    s1 = "fffs2da4ff";
+    ldcf->insert(s1);
+    s1 = "ekfs2da4ekfnek";
+    ldcf->insert(s1);
+
+
+    s1 = "fffs7ff";
+    ldcf->insert(s1);
+    s1 = "ekfsek7fnek";
+    ldcf->insert(s1);
+    s1 = "fff4sda7ff";
+    ldcf->insert(s1);
+    s1 = "ek4fsd7aekfnek";
+    ldcf->insert(s1);
+    s1 = "f4ff27ff";
+    ldcf->insert(s1);
+    s1 = "ekf2e46kfnek";
+    ldcf->insert(s1);
+    s1 = "fff246sff";
+    ldcf->insert(s1);
+    s1 = "2dd46dd";
+    ldcf->insert(s1);
+    s1 = "fff6s2daf4f";
+    ldcf->insert(s1);
+    s1 = "ek6fs2da4ekfnek";
+    ldcf->insert(s1);
+    s1 = "e6kfekf4nek";
+    ldcf->insert(s1);
+    s1 = "6fffsf4f";
+    ldcf->insert(s1);
+    s1 = "ekfsekf54nek";
+    ldcf->insert(s1);
+    s1 = "fffsda54ff";
+    ldcf->insert(s1);
+    s1 = "ekfsd5a4ekfnek";
+    ldcf->insert(s1);
+    s1 = "fff25f4f";
+    ldcf->insert(s1);
+    s1 = "ekf52ekf4nek";
+    ldcf->insert(s1);
+    s1 = "ff5f2sf4f";
+    ldcf->insert(s1);
+    s1 = "25ddd4d";
+    ldcf->insert(s1);
+    s1 = "5fffs2da4ff";
+    ldcf->insert(s1);
+    s1 = "ekfs2da45ekfnek";
+    ldcf->insert(s1);
 
     ldcf->insert(seq6);
     ldcf->insert(seq7);
@@ -134,12 +220,43 @@ int main() {
     ldcf->insert(seq23);
     ldcf->insert(seq24);
     
-    ldcf->get_node()->printContents();
+    // ldcf->get_node()->printContents();
 
     cout << ldcf->get_node()->CF_string() << endl;
+    // cout << ldcf->get_left_child()->CF_string() << endl;
+    // cout << ldcf->get_right_child()->CF_string() << endl;
 
     // CuckooFilter* np = nullptr;
     // cout << np << endl;
+
+    cout << "Query test:" << endl;
+
+    if(ldcf->query("elenazelenablablabla")){
+        cout << ("Nađen ekfs2da45ekfnek") << endl;
+    }
+
+    if(ldcf->del(s1)){
+        cout << ("obrisan ekfs2da45ekfnek") << endl;
+    }
+    else {
+        cout << "nije obrisan!" << endl;
+    }
+
+
+    if(ldcf->query("ekfs2da45ekfnek")){
+        cout << "Nađen ekfs2da45ekfnek" << endl;
+    }
+    else {
+        cout << "nije nađen" << endl;
+    }
+
+
+    if(ldcf->del(s1)){
+        cout << ("obrisan ekfs2da45ekfnek") << endl;
+    }
+    else {
+        cout << "nije obrisan!" << endl;
+    }
 
     return 0;
 }

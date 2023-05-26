@@ -14,8 +14,10 @@ using namespace std;
 
 CuckooFilter::CuckooFilter(int singleTableLength, int bucketSize, int currLevel) {
 
+    // cout << "STVOREN JE CUCKOO" << endl;
+
     single_table_length = singleTableLength;
-    cout << "single_table_length has been set to: " << single_table_length << endl;
+    // cout << "single_table_length has been set to: " << single_table_length << endl;
     bucket_size = bucketSize;
     capacity = single_table_length * bucket_size;
     isEmpty = true;
@@ -36,7 +38,7 @@ CuckooFilter::CuckooFilter(int singleTableLength, int bucketSize, int currLevel)
 		
         //memset(bucket[i].stored_kmer, 0, sizeof(string));
 	}
-    cout << "izlazim iz constructora i trenutno je stl " << single_table_length << endl;
+    // cout << "izlazim iz constructora i trenutno je stl " << single_table_length << endl;
     
 }
 
@@ -67,7 +69,7 @@ string CuckooFilter::printContents() {
 // temporary insert function
 bool CuckooFilter::insert(string value) {
 
-    cout << "ušao sam u insert s bucket_sizeom veličine " << bucket_size << " za value: " << value << endl;
+    // cout << "ušao sam u insert s bucket_sizeom veličine " << bucket_size << " za value: " << value << endl;
     
 
     int index;
@@ -78,16 +80,16 @@ bool CuckooFilter::insert(string value) {
 
     string fingerprint = hashing.fingerprint(value);
 
-    cout << "ulazim u generateFirstIndex" << endl;
+    // cout << "ulazim u generateFirstIndex" << endl;
     index = generateFirstIndex(value, single_table_length);
-    cout << "izašao sam iz generateFirstIndex" << endl;
+    // cout << "izašao sam iz generateFirstIndex" << endl;
     alt_index = generateSecondIndex(value, fingerprint, single_table_length);
 
-    cout << "bucket size u fji insert = " << bucket_size << endl;
+    // cout << "bucket size u fji insert = " << bucket_size << endl;
     for (int j = 0; j < bucket_size; j++){
-        cout << index << endl;
+        // cout << index << endl;
         if (bucket[index].stored_kmer[j] == "") {  // first calculated position is empty
-            cout << "prošao je if" << endl;
+            // cout << "prošao je if" << endl;
             bucket[index].stored_kmer[j] = value;
             isEmpty = false;
             insertedCounter += 1;
@@ -100,21 +102,21 @@ bool CuckooFilter::insert(string value) {
     }
 
 
-    cout << "alt_index = " << alt_index << endl;
+    // cout << "alt_index = " << alt_index << endl;
     auto bla = bucket[alt_index];
 
-    cout << "bucket_size = " << bucket_size << endl;
+    // cout << "bucket_size = " << bucket_size << endl;
     
     for (int j = 0; j < bucket_size; j++){
-        cout << "here 1" << endl;
+        // cout << "here 1" << endl;
 
         if (bucket[alt_index].stored_kmer[j] == "") {  // second calculated position is empty
-            cout << "here 2" << endl;
+            // cout << "here 2" << endl;
             bucket[alt_index].stored_kmer[j] = value;
             //cout << value << " je bio bouncan alternativno!" << endl;
             isEmpty = false;
             insertedCounter += 1;
-            cout << "here 3" << endl;
+            // cout << "here 3" << endl;
 
             if (insertedCounter == capacity && insertedCounter != 0){
                 isFull = true;
@@ -184,7 +186,7 @@ bool CuckooFilter::deleteItem(string value) {
         
     }
       
-    //std::cout <<  "Deletion failed. Element wasnt in any of two locations." << std::endl;
+    cout <<  "Deletion failed. Element wasnt in any of two locations." << std::endl;
     return false;
 }
 
@@ -218,9 +220,9 @@ bool CuckooFilter::query(string  value){
 }
 
 
-int32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
+uint32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
 
-	int32_t index;
+	uint32_t index;
     Hashing hashing;
     HashNumber hn;
     cout << "bucket_size u generateFirstIndex = " << bucket_size << endl;
@@ -241,10 +243,10 @@ int32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
 	
 }
 
-int32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int singleTableLength){ 
+uint32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int singleTableLength){ 
 
-    int32_t index;
-    int32_t alt_index;
+    uint32_t index;
+    uint32_t alt_index;
 
     Hashing hashing;
     HashNumber hn;
@@ -252,11 +254,15 @@ int32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int 
     string hashFromValue = hashing.hash_f(value);
     int64_t fingerprintAsNumber = hn.hash_to_number(fingerprint);
 
-    int64_t hashAsNumber = hn.hash_to_number(hashFromValue);
+    uint64_t hashAsNumber = hn.hash_to_number(hashFromValue);
 
     index = hashAsNumber % singleTableLength;
+    cout << "singleTableLength" << singleTableLength << endl;
 
-    alt_index = (index ^ (fingerprintAsNumber * 0x9e3779b9)) % singleTableLength; // golden ratio constant to enforce randomness
+    cout << "štaeovo" << (index ^ (fingerprintAsNumber * 0x9e3779b9)) << endl;
+
+    alt_index = uint32_t(index ^ (fingerprintAsNumber * 0x9e3779b9)) % singleTableLength; // golden ratio constant to enforce randomness
+    cout << "vraćam ti alt_index = " << alt_index << endl;
 
     return alt_index;
 }
@@ -339,11 +345,11 @@ string CuckooFilter::CF_string() {
     ss << "\t left_child = " << get_left_child() << ", right_child = " << get_right_child() << endl;
     ss << "\t node content: " << endl << printContents();
     if (get_left_child() != nullptr) {
-        ss << "\t left_child: ";
+        ss << "\t left_child: \n";
         ss << get_left_child()->printContents();
     }
     if (get_right_child() != nullptr) {
-        ss << "\t right_child: ";
+        ss << "\t right_child: \n";
         ss << get_right_child()->printContents();
     }
     return ss.str();

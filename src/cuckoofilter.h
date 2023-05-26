@@ -50,10 +50,10 @@ class CuckooFilter {
 
     bool tryInsert(string value); // will call insert() function and handle victim inserts 
 
-    int32_t generateFirstIndex(string value, int single_table_length); // temporary functions to generate 1st and 2nd index
+    uint32_t generateFirstIndex(string value, int single_table_length); // temporary functions to generate 1st and 2nd index
 
-    int32_t generateSecondIndex(string value, string fingerprint, int single_table_length); // fingerprint should be part of the hash,so its data type
 
+    uint32_t generateSecondIndex(string value, string fingerprint, int singleTableLength);
     // code written by Elena
     CuckooFilter* get_left_child();
 
