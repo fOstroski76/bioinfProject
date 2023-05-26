@@ -6,19 +6,24 @@
 
 int main() {
     int total_capacity = 40;
-    size_t CF_size = 10;
-    size_t bucket_size = 4;
+    int CF_size = 10;
+    int bucket_size = 4;
 
     LDCF* ldcf = new LDCF(total_capacity, CF_size, bucket_size);
+    cout << "ldcf.stl " << ldcf->get_single_table_length() << endl;
     CuckooFilter* node = ldcf->get_node();
+    cout << "prvi" << endl;
 
     // left and right child in LDCF class not needed?!    
     CuckooFilter* left_child = ldcf->get_left_child();
+    cout << "drugi" << endl;
     CuckooFilter* right_child = ldcf->get_right_child();
+    cout << "treći" << endl;
 
     string seq1 = "ATGATGCGCTGCTAGCTGCATG";
-    ldcf->insert(seq1);
+    bool tmp = ldcf->insert(seq1);
     // ldcf->get_node()->printContents();
+    cout << "četvrti" << endl;
 
     string seq2 = "ATGATGCGCTGNNAGCTGCATG";
     ldcf->insert(seq2);
@@ -82,6 +87,18 @@ int main() {
     ldcf->insert(s1);
     s1 = "fran";
     ldcf->insert(s1);
+    s1 = "bbb";
+    ldcf->insert(s1);
+    s1 = "zelena";
+    ldcf->insert(s1);
+    s1 = "zfran";
+    ldcf->insert(s1);
+    s1 = "erika";
+    ldcf->insert(s1);
+    s1 = "fffff";
+    ldcf->insert(s1);
+    s1 = "ekfekfnek";
+    ldcf->insert(s1);
 
     ldcf->insert(seq6);
     ldcf->insert(seq7);
@@ -98,7 +115,7 @@ int main() {
     ldcf->insert(seq18);
     ldcf->insert(seq19);
     ldcf->insert(seq20);
-    cout << "prezivio do tu" << endl; 
+    // cout << "prezivio do tu" << endl; 
     // PROBLEM: when this line above is commented, it results in Segmentation fault (core dumped)
 
 

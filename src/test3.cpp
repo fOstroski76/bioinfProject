@@ -16,8 +16,8 @@
 using namespace std;
 
 int main() {
-    size_t tableLength;
-    size_t bucket_size;
+    int tableLength;
+    int bucket_size;
     std::cout << "Enter the table length for the CF and the desired bucket size (capacity: tl * bs): ";
     std::cin >> tableLength;
     std::cin >> bucket_size;

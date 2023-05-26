@@ -7,8 +7,8 @@
 using namespace std;
 
 int main() {
-    size_t list_size = 120;
-    size_t bucket_size = 4;
+    int list_size = 120;
+    int bucket_size = 4;
     CF cf = CF(list_size, bucket_size);
     cout << cf.CF_string() << endl;
 

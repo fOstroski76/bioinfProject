@@ -10,12 +10,12 @@ using namespace std;
 class LDCF {
     private:
 
-        int totalCapacity;
+        int total_capacity;
         int single_table_length;
 
 
-        size_t list_size;
-        size_t bucket_size;
+        int list_size;
+        int bucket_size;
 
         CuckooFilter* node;
         CuckooFilter* left_child;
@@ -27,7 +27,7 @@ class LDCF {
 
         int counterTotal; // counts total amount of stored elements in all cuckoo filters
 
-        LDCF(int totalCapacity, size_t list_size, size_t bucket_size);
+        LDCF(int total_capacity, int list_size, int bucket_size);
         bool insert(string s);
         bool query(const string s);
         bool del(const string s);
@@ -39,4 +39,6 @@ class LDCF {
         LDCF* get_child(LDCF* node, int i, const string prefix);
 
         const string get_prefix(const string s, int level);
+
+        int get_single_table_length();
 };
