@@ -64,36 +64,45 @@ int main(){
 
     std::vector<std::string> result = generate_kmers(content, k);
     std::vector<std::string> resultSynt = generate_kmers(syntheticContent, k);
-    for (const auto& kmer : result) {
 
-        logDynCuckooFilter->insert(kmer);
-        //std::cout << kmer << " " << endl;
-    }
 
-    cout << "Querying over same elements that were inserted..." << endl << endl;
+    std::ofstream outputFile("Output.txt");
 
-    for (const auto& kmer : result) {
+     if (outputFile.is_open()) {
+        std::streambuf* coutBuffer = std::cout.rdbuf();
+        std::cout.rdbuf(outputFile.rdbuf());
 
-        if(logDynCuckooFilter->query(kmer)){
-            cout << "K-mer: " << kmer << " found: yes" << endl; 
-        } else {
-            cout << "K-mer: " << kmer << " found: no" << endl; 
+        // Write output to the file
+        for (const auto& kmer : result) {
+            logDynCuckooFilter->insert(kmer);
         }
-        //std::cout << kmer << " " << endl;
-    }
-    std::cout << std::endl << endl;
 
-    cout << "Querying randomly generated input..." << endl << endl;
+        cout << "Querying over same elements that were inserted..." << endl << endl;
 
-    for (const auto& kmer : resultSynt) {
-
-        if(logDynCuckooFilter->query(kmer)){
-            cout << "K-mer: " << kmer << " found: yes" << endl; 
-        } else {
-            cout << "K-mer: " << kmer << " found: no" << endl; 
+        for (const auto& kmer : result) {
+            if(logDynCuckooFilter->query(kmer)){
+                cout << "K-mer: " << kmer << " found: yes" << endl; 
+            } else {
+                cout << "K-mer: " << kmer << " found: no" << endl; 
+            }
         }
-        //std::cout << kmer << " " << endl;
-    }
-    std::cout << std::endl;
+
+        std::cout << std::endl << endl;
+
+        cout << "Querying randomly generated input..." << endl << endl;
+
+        for (const auto& kmer : resultSynt) {
+            if(logDynCuckooFilter->query(kmer)){
+                cout << "K-mer: " << kmer << " found: yes" << endl; 
+            } else {
+                cout << "K-mer: " << kmer << " found: no" << endl; 
+            }
+        }
+
+     }
+
+    outputFile.close();
+
+
     return 0;
 }
