@@ -315,10 +315,12 @@ int CuckooFilter::get_level() {
     return level;
 }
 
-bool CuckooFilter::generate_children(int single_table_length, int bucket_size, int curr_level) {
-    right_child = new CuckooFilter(single_table_length, bucket_size, curr_level + 1);
+bool CuckooFilter::generate_children(int singleTableLength, int bucketSize, int currLevel) {
+    // cout << "ulazim u generiranje djece s bucket sizeom" << bucketSize << endl;
+    right_child = new CuckooFilter(singleTableLength, bucketSize, currLevel + 1);
+    // cout << right_child->get_bucket_size() << endl;
     right_child->parent = this;
-    left_child = new CuckooFilter(single_table_length, bucket_size, curr_level + 1);
+    left_child = new CuckooFilter(single_table_length, bucket_size, currLevel + 1);
     left_child->parent = this;
     return true;
 }
@@ -328,5 +330,13 @@ string CuckooFilter::CF_string() {
     stringstream ss;
     ss << "CF: empty=" << this->isEmpty << ", full=" << this->isFull << endl;
     ss << "\t left_child = " << get_left_child() << ", right_child = " << get_right_child() << endl;
+    if (get_left_child() != nullptr) {
+        ss << "\t left_child: ";
+        get_left_child()->printContents();
+    }
+    if (get_right_child() != nullptr) {
+        ss << "\t right_child: ";
+        get_right_child()->printContents();
+    }
     return ss.str();
 }
