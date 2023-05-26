@@ -4,9 +4,10 @@
 
 #include "cuckoofilter.h"
 #include <iostream>
+#include <algorithm>
+#include <string>
 #include "Hashing.h"
 #include "HashNumber.h"
-#include <algorithm>
 #include "selectvictim.h"
 
 using namespace std;
@@ -46,15 +47,21 @@ CuckooFilter::~CuckooFilter() {
 }
 
  // function to print all elements, used for small tests
-void CuckooFilter::printContents() {
+string CuckooFilter::printContents() {
+    string retVal = "";
     for (int i = 0; i < single_table_length; i++) {
-        std::cout << "Bucket " << i << " : ";
+        // std::cout << "Bucket " << i << " : ";
+        retVal += "Bucket " + to_string(i) + " :";
         for (int j = 0; j < bucket_size; j++){
-           std::cout << "  " << (bucket[i].stored_kmer[j]);
+           // std::cout << "  " << (bucket[i].stored_kmer[j]);
+           retVal += "  " + (bucket[i].stored_kmer[j]);
         }
-        std::cout << endl;
+        // std::cout << endl;
+        retVal += "\n";
     }
-    std::cout << endl;
+    // std::cout << endl;
+    retVal += "\n";
+    return retVal;
 }
 
 // temporary insert function
@@ -330,13 +337,14 @@ string CuckooFilter::CF_string() {
     stringstream ss;
     ss << "CF: empty=" << this->isEmpty << ", full=" << this->isFull << endl;
     ss << "\t left_child = " << get_left_child() << ", right_child = " << get_right_child() << endl;
+    ss << "\t node content: " << endl << printContents();
     if (get_left_child() != nullptr) {
         ss << "\t left_child: ";
-        get_left_child()->printContents();
+        ss << get_left_child()->printContents();
     }
     if (get_right_child() != nullptr) {
         ss << "\t right_child: ";
-        get_right_child()->printContents();
+        ss << get_right_child()->printContents();
     }
     return ss.str();
 }

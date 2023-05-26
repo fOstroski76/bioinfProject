@@ -5,7 +5,7 @@
 #ifndef CUCKOOFILTER_H
 #define CUCKOOFILTER_h
 
-#include <string.h>
+// #include <string.h>
 #include <stdlib.h>
 #include <string>
 
@@ -40,7 +40,7 @@ class CuckooFilter {
     CuckooFilter(int single_table_length, int bucket_size, int curr_level);
     ~CuckooFilter();
 
-    void printContents();
+    string printContents();
 
     bool insert(string value); // will calculate index within a hashing function, now lets pretend it is precalculated
 
