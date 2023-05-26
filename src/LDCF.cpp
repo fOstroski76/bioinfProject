@@ -15,6 +15,7 @@
 //#include "LDCF.h"
 // #include "cuckoofilter.h"
 #include "Localizing.h"
+#include "Hashing.h"
 
 using namespace std;
 
@@ -48,13 +49,15 @@ bool LDCF::insert(string s) {
 
 
     Localize loc;
+    Hashing h;
+    string fgpt = h.fingerprint(s);
 
     CuckooFilter* node = get_node();
     int right;
     bool successful_insert;
     CuckooFilter* parent = new CuckooFilter(node->get_single_table_length(), node->get_bucket_size(), (node->get_level())-1);
     while (node != nullptr && node->isFull) {
-        right = loc.get_location(s);
+        right = loc.get_location(fgpt, node->level);
         if (right == 1) {
             parent = node;
             node = node->get_right_child();
@@ -64,56 +67,57 @@ bool LDCF::insert(string s) {
             node = node->get_left_child();
         }
         else {
-            cout << "nešta se krivo računa" << endl;
+          // cout  << "nešta se krivo računa" << endl;
         }
     }
-    cout << "tu4" << endl;
+  // cout << "tu4" << endl;
     if (node == nullptr) {
         // loop was exited because all previous are full
         node = parent;
         node->generate_children(node->get_single_table_length(), node->get_bucket_size(), node->level);
-        right = loc.get_location(s);
+        // fgpt = h.fingerprint(s);
+        right = loc.get_location(fgpt, node->level);
         CuckooFilter* insertingCF;
         if (right) {
-            CuckooFilter* insertingCF = node->get_right_child();
+            insertingCF = node->get_right_child();
         }
         else {
-            CuckooFilter* insertingCF = node->get_left_child();
+            insertingCF = node->get_left_child();
         }
         successful_insert = insertingCF->tryInsert(s);
-        cout << "insert successful: " << successful_insert << endl;
-        cout << "added in new CF" << endl;
+      // cout << "insert successful: " << successful_insert << endl;
+      // cout << "added in new CF" << endl;
 
     }
     else if (!(node->isFull)) {
         // loop was exited because the first not full CF was found
         successful_insert = node->tryInsert(s);
-        cout << "insert successful: " << successful_insert << endl;
-        cout << "added to an existing CF" << endl;
-        cout << "node->isFull = " << node->isFull << endl;
+      // cout << "insert successful: " << successful_insert << endl;
+      // cout << "added to an existing CF" << endl;
+      // cout << "node->isFull = " << node->isFull << endl;
     }
     if (!successful_insert) {
-        cout << "ulazim u dodavanje ponovno" << endl;
+      // cout << "ulazim u dodavanje ponovno" << endl;
         node->generate_children(node->get_single_table_length(), node->get_bucket_size(), node->level);
-        cout << "1" << endl;
-        right = loc.get_location(s);
+      // cout << "1" << endl;
+        right = loc.get_location(fgpt, node->level);
 
-        cout << "2" << endl;
+      // cout << "2" << endl;
         CuckooFilter* insertingCF;
         if (right) {
             insertingCF = node->get_right_child();
             insertingCF->printContents();
-            cout << "3" << endl;
+          // cout << "3" << endl;
         }
         else {
             insertingCF = node->get_left_child();
-            cout << "4" << endl;
+          // cout << "4" << endl;
         }
-        cout << "5" << endl;
-        cout << insertingCF->get_bucket_size() << endl;
+      // cout << "5" << endl;
+      // cout << insertingCF->get_bucket_size() << endl;
         successful_insert = insertingCF->tryInsert(s);
-        cout << "insert successful: " << successful_insert << endl;
-        cout << "added in new CF" << endl;
+      // cout << "insert successful: " << successful_insert << endl;
+      // cout << "added in new CF" << endl;
 
     }
 
@@ -121,24 +125,82 @@ bool LDCF::insert(string s) {
 }
 
 bool LDCF::query(const string s) {
-    // to be implemented
-    return true;
+    Localize loc;
+    Hashing h;
+    string fgpt = h.fingerprint(s);
+
+    CuckooFilter* node = get_node();
+
+    int right;
+    bool found = false;
+    CuckooFilter* parent = new CuckooFilter(node->get_single_table_length(), node->get_bucket_size(), (node->get_level())-1);
+    while (node != nullptr) {
+        found = node->query(s);
+        if (found) {
+            return true;
+        }
+        if (!found) {
+            right = loc.get_location(fgpt, node->level);
+            if (right == 1) {
+                parent = node;
+                node = node->get_right_child();
+            }
+            else if (right == 0) {
+                parent = node;
+                node = node->get_left_child();
+            }
+            else {
+                cout << "query: nešta se krivo računa" << endl;
+            }
+        }
+    }
+    return false;
+    
 }
 
 bool LDCF::del(const string s) {
     // to be implemented
-    return true;
+    Localize loc;
+    Hashing h;
+    string fgpt = h.fingerprint(s);
+
+    CuckooFilter* node = get_node();
+
+    int right;
+    bool deleted = false;
+    CuckooFilter* parent = new CuckooFilter(node->get_single_table_length(), node->get_bucket_size(), (node->get_level())-1);
+    while (node != nullptr) {
+        deleted = node->deleteItem(s);
+        if (deleted) {
+            return true;
+        }
+        if (!deleted) {
+            right = loc.get_location(fgpt, node->level);
+            if (right == 1) {
+                parent = node;
+                node = node->get_right_child();
+            }
+            else if (right == 0) {
+                parent = node;
+                node = node->get_left_child();
+            }
+            else {
+                cout << "delete: nešta se krivo računa" << endl;
+            }
+        }
+    }
+    return false;
 }
 
-LDCF* LDCF::get_child(LDCF* node, int i, const string prefix) {
-    // to be implemented
-    return node;
-}
+// LDCF* LDCF::get_child(LDCF* node, int i, const string prefix) {
+//     // to be implemented
+//     return node;
+// }
 
-const string LDCF::get_prefix(const string s, int level) {
-    // to be implemented
-    return s;
-}
+// const string LDCF::get_prefix(const string s, int level) {
+//     // to be implemented
+//     return s;
+// }
 
 int LDCF::get_single_table_length() {
     return single_table_length;

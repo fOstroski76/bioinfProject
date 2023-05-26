@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int Localize::get_location(string &str) {
+int Localize::get_location(string fgpt, int currLevel) {
     // cout << "string = " << str << endl;
     // cout << bitset<8>(str[0]) << endl;
 
@@ -21,9 +21,9 @@ int Localize::get_location(string &str) {
 
     // cout << bitset<8>(str[0])[0] << endl;
 
-    str.erase(0, 1);
+    // fgpt.erase(0, 1);
 
-    return int(bitset<8>(str[0])[0]);
+    return int(bitset<8>(fgpt[currLevel])[0]);
 }
 
 void Localize::recover_xi_x(string &str, CuckooFilter* node) {
@@ -42,7 +42,7 @@ void Localize::recover_xi_x(string &str, CuckooFilter* node) {
             // cout << "adding 1" << endl;
         }
         else {
-            cout << "nesto je krivo!" << endl;
+            // cout << "nesto je krivo!" << endl;
         }
         node = parent;
         // cout << "node je sada " << &node << endl;
@@ -51,6 +51,6 @@ void Localize::recover_xi_x(string &str, CuckooFilter* node) {
     }
     // cout << "up_tree: " << up_tree << endl;
     str.insert(0, up_tree);
-    cout << "whole fingerprint is: " << str << endl;
+    // cout << "whole fingerprint is: " << str << endl;
     return;
 }
