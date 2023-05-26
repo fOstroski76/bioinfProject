@@ -4,53 +4,31 @@
 #include <string>
 #include <bitset>
 #include "Localizing.h"
-// #include "CF.h"
 
 using namespace std;
 
+// determines which child the fingerprint should be added to
+// based on the first bit of the fingerprint
+// returns 0 if should be added to left child, 1 if added to right child
 int Localize::get_location(string fgpt, int currLevel) {
-    // cout << "string = " << str << endl;
-    // cout << bitset<8>(str[0]) << endl;
-
-    // testing...
-    // for (int i = 0; i < 8; i++) {
-    //     cout << bitset<8>(str[0])[i];
-    // }
-    // cout << endl;
-    // conclusion: it is reversed!
-
-    // cout << bitset<8>(str[0])[0] << endl;
-
-    // fgpt.erase(0, 1);
-
     return int(bitset<8>(fgpt[currLevel])[0]);
 }
 
+// recovers fingerprint from position in the LDCF tree structure
 void Localize::recover_xi_x(string &str, CuckooFilter* node) {
-    // not properly working but pushed so other can work with other code
+    // not used explicitly, but used to create other functions
     string up_tree = "";
     CuckooFilter* parent = node->get_parent();
-    // cout << "ulazni node je " << node << endl;
-    // cout << "ulazni parent je " << parent << endl;
     while (parent != nullptr) {
         if (node == parent->get_left_child()) {
             up_tree = '0' + up_tree;
-            // cout << "adding 0" << endl;
         }
         else if (node == parent->get_right_child()) {
             up_tree = '1' + up_tree;
-            // cout << "adding 1" << endl;
-        }
-        else {
-            // cout << "nesto je krivo!" << endl;
         }
         node = parent;
-        // cout << "node je sada " << &node << endl;
         parent = parent->get_parent();
-        // cout << "parent je sada " << &parent << endl;
     }
-    // cout << "up_tree: " << up_tree << endl;
     str.insert(0, up_tree);
-    // cout << "whole fingerprint is: " << str << endl;
     return;
 }

@@ -12,8 +12,6 @@
 #include <iomanip>
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
-// #include "CF.h"
-// #include "LDCF.h"
 
 using namespace std;
 

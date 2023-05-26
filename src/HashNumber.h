@@ -11,5 +11,4 @@ class HashNumber {
 
         string number_to_hash(uint64_t number, int substr_len);
 
-
 };

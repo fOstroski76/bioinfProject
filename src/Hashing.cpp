@@ -1,7 +1,7 @@
 // code written by Elena
 
 // because of SHA256Init function, has to be run with: g++ -I/usr/include/openssl/ nameOfFile.cpp -lcrypto
-// or need to add "-I/usr/include/openssl/" and "-lcrypto" as arguments in tasks.json if using vscode
+// or need to add "-I/usr/include/openssl/" and "-lcrypto" as arguments in tasks.json if using Visual Studio Code
 
 #include <iostream>
 #include <string>
@@ -15,10 +15,12 @@
 
 using namespace std;
 
+// returns string of bitset
 string Hashing::to_string(bitset<32> bs) {
     return bs.to_string();
 }
 
+// creates fingerprint of input string
 string Hashing::fingerprint(string str) {
     int fgpt_len = 6;
     HashNumber hn;
@@ -33,7 +35,7 @@ string Hashing::fingerprint(string str) {
 
     stringstream ss;
 
-    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++){
+    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
         ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
     }
     string hash_str = ss.str();
@@ -44,12 +46,11 @@ string Hashing::fingerprint(string str) {
 
     string retVal = hashing.to_string(hash_substr_int ^ input_substr_int); // ^ bitwise xor
 
-    // cout << "fingerprint for input " << str << " is: " << retVal << endl;
-    // cout << retVal.length() << endl;
     return retVal;
 }
 
-string Hashing::hash_f(const string str){
+// creates SHA256 hash of input string (bzcket address)
+string Hashing::hash_f(const string str) {
     unsigned char hash[SHA256_DIGEST_LENGTH];
 
     SHA256_CTX sha256;
@@ -62,25 +63,20 @@ string Hashing::hash_f(const string str){
     for(int i = 0; i < SHA256_DIGEST_LENGTH; i++){
         ss << hex << setw(2) << setfill('0') << static_cast<int>(hash[i]);
     }
-    string retVal = ss.str();
-    // string retVal = ss.str().substr(0, 16);
-    // cout << "hash_f function for input " << str << " returning: " << retVal << endl;
-    return retVal;
+    
+    return ss.str();
 }
 
+// calculates alternative bucket address
 string Hashing::second_hash_f(uint64_t mu_x_int, const string xi_x) {
     // returns nu_x = h1 XOR hash(xi_x)
-    // mu_x_int is h1 as number; xi_x is fingerprint
+    // mu_x_int is h1 as number; xi_x is fingerprint (using standard CF variable names)
+
     Hashing hashing;
     HashNumber hn;
-    // cout << "mu_x_int of second_hash = " << mu_x_int << endl;
     string xi_x_hash = hashing.hash_f(xi_x);
     uint64_t xi_x_hash_int = hn.hash_to_number(xi_x_hash);
     string nu_x = hashing.to_string(mu_x_int ^ xi_x_hash_int); // ^ bitwise xor
-    // cout << "nu_x = " << nu_x << endl;
-
-    // unsigned long nu_x_int = stoul(nu_x, nullptr, 10);
-    // cout << "nu_x_int = " << nu_x_int << endl; 
-
+    
     return nu_x;
 }
