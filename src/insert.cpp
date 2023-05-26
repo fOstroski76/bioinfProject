@@ -32,10 +32,6 @@ bitset<32> to_bitset(string s) {
     return bitset<32>(s);
 }
 
-// string to_string(bitset<32> bs) {
-//     return bs.to_string();
-// }
-
 int checkCF(int s) {
     // to be implemented
     return 0;

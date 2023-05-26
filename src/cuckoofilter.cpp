@@ -28,18 +28,14 @@ CuckooFilter::CuckooFilter(int singleTableLength, int bucketSize, int currLevel)
 
     bucket = new Bucket[single_table_length];
 	for(int i = 0; i<single_table_length; i++){
-        
         for (int j = 0; j < bucket_size; j++){
             bucket[i].stored_kmer[j] = "";
         }
-		
 	}
-    
 }
 
 // destructor 
 CuckooFilter::~CuckooFilter() {
-    
     delete[] bucket;
 }
 
@@ -47,13 +43,10 @@ CuckooFilter::~CuckooFilter() {
 string CuckooFilter::printContents() {
     string retVal = "";
     for (int i = 0; i < single_table_length; i++) {
-    
         retVal += "Bucket " + to_string(i) + " :";
         for (int j = 0; j < bucket_size; j++){
-           
            retVal += "  " + (bucket[i].stored_kmer[j]);
         }
-        
         retVal += "\n";
     }
 
@@ -64,7 +57,6 @@ string CuckooFilter::printContents() {
 // Tries to insert element  to its' supposed-to-be location, or to the alternative location. 
 // Returns true if found on any of those locations, otherwise returns false.
 bool CuckooFilter::insert(string value) {
-
     
     int index;
     int alt_index;
@@ -78,7 +70,6 @@ bool CuckooFilter::insert(string value) {
     alt_index = generateSecondIndex(value, fingerprint, single_table_length);
 
     for (int j = 0; j < bucket_size; j++){
-    
         if (bucket[index].stored_kmer[j] == "") {  // first calculated position is empty
             bucket[index].stored_kmer[j] = value;
             isEmpty = false;
@@ -92,9 +83,7 @@ bool CuckooFilter::insert(string value) {
     }
  
     for (int j = 0; j < bucket_size; j++){
-
         if (bucket[alt_index].stored_kmer[j] == "") {  // second calculated position is empty
-        
             bucket[alt_index].stored_kmer[j] = value;
             isEmpty = false;
             insertedCounter += 1;
@@ -104,14 +93,10 @@ bool CuckooFilter::insert(string value) {
             }
 
             return true;
-        
         }
-
     } 
         
-    
-    return false;
-      
+    return false;     
 }
 
 // Tries to delete element  from its' supposed-to-be location, or from the alternative location. 
@@ -145,7 +130,6 @@ bool CuckooFilter::deleteItem(string value) {
             }
             return true;
         }
-        
     }
 
     for (int j = 0; j < bucket_size; j++){
@@ -164,9 +148,7 @@ bool CuckooFilter::deleteItem(string value) {
 
         return true;
         }
-        
     }
-      
     return false;
 }
 
@@ -196,11 +178,10 @@ bool CuckooFilter::query(string  value){
         return true;    // if the value is at the alternative location, return true
         }
     }
-    
     return false;
 }
 
-// generates the first , a.k.a the original index where the value should be placed, using its' generated hash value.
+// Generates the first , a.k.a the original index where the value should be placed, using its' generated hash value.
 // modulo operation with the number of buckets is performed so that the index is not out of bounds
 uint32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
 
@@ -219,10 +200,9 @@ uint32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
     index = uint64_t(hashAsNumber) % uint64_t(singleTableLength);
 
     return index;
-	
 }
 
-// generates the index for the alternative location of an input value, by using the value, its' fingerprint, and performs
+// Generates the index for the alternative location of an input value, by using the value, its' fingerprint, and performs
 // modulo with the table length (number of buckets per cuckoo filter) to make sure that the index is not out of bounds
 uint32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int singleTableLength){ 
 
@@ -252,10 +232,8 @@ bool CuckooFilter::tryInsert(string value){
 
     for(int i = 0; i < MAX_RELOCATION; i++){
         if(insert(value)) {
-            
             return true;
         }
-
         else {
     
             Hashing hashing;
@@ -266,49 +244,56 @@ bool CuckooFilter::tryInsert(string value){
             string victim = bucket[valueFirstIndex].stored_kmer[victimIndex];
             bucket[valueFirstIndex].stored_kmer[victimIndex] = value;
             value = victim;
-            
         }
     }
     isFull = true;
     return false;
 }
 
+
+
 // code written by Elena
+
+// returns pointer to right child of current CF node
 CuckooFilter* CuckooFilter::get_right_child() {
     return right_child;
 }
 
+// returns pointer to left child of current CF node
 CuckooFilter* CuckooFilter::get_left_child() {
     return left_child;
 }
 
+// returns pointer to parent of current node
 CuckooFilter* CuckooFilter::get_parent() {
     return parent;
 }
 
+// returns number of buckets inside of one CF
 int CuckooFilter::get_single_table_length() {
     return single_table_length;
 }
 
+// returns number of entries inside of one bucket
 int CuckooFilter::get_bucket_size() {
     return bucket_size;
 }
 
+// returns level (in tree) of current node
 int CuckooFilter::get_level() {
     return level;
 }
 
+// generates two children of current CF
 bool CuckooFilter::generate_children(int singleTableLength, int bucketSize, int currLevel) {
-    // cout << "ulazim u generiranje djece s bucket sizeom" << bucketSize << endl;
     right_child = new CuckooFilter(singleTableLength, bucketSize, currLevel + 1);
-    // cout << right_child->get_bucket_size() << endl;
     right_child->parent = this;
     left_child = new CuckooFilter(single_table_length, bucket_size, currLevel + 1);
     left_child->parent = this;
     return true;
 }
 
-
+// returns string representation of a CF
 string CuckooFilter::CF_string() {
     stringstream ss;
     ss << "CF: empty=" << this->isEmpty << ", full=" << this->isFull << endl;
@@ -324,3 +309,7 @@ string CuckooFilter::CF_string() {
     }
     return ss.str();
 }
+
+
+
+// inspired by and based on LDCF of Zhang et al., doi: 10.1109/ICDE51399.2021.00087

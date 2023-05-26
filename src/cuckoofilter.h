@@ -5,7 +5,6 @@
 #ifndef CUCKOOFILTER_H
 #define CUCKOOFILTER_h
 
-// #include <string.h>
 #include <stdlib.h>
 #include <string>
 
@@ -54,6 +53,7 @@ class CuckooFilter {
 
 
     uint32_t generateSecondIndex(string value, string fingerprint, int singleTableLength);
+    
     // code written by Elena
     CuckooFilter* get_left_child();
 

@@ -11,7 +11,6 @@ class CF {
         CF* right_child;
         CF* left_child;
         CF* parent;
-        // friend ostream& operator<<(ostream &s, const CF &cf);
 
     public:
         bool full;

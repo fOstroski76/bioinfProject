@@ -8,10 +8,11 @@
 
 using namespace std;
 
+// used to generate CuckooFilter.cpp
+
 CF::CF(size_t list_size, size_t bucket_size) {
     list_size = list_size;
     capacity = list_size * bucket_size;
-    // curr_level = curr_level;
     full = false;
     empty = true;
     right_child = nullptr;
@@ -38,10 +39,6 @@ bool CF::generate_children(size_t list_size, size_t bucket_size) {
     left_child->parent = this;
     return true;
 }
-
-// ostream& operator<<(ostream &s, const CF &cf) {
-//     return s << "CF: empty=" << cf.empty << ", full=" << cf.full << endl;
-// }
 
 string CF::CF_string() {
     stringstream ss;
