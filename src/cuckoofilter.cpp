@@ -60,7 +60,8 @@ void CuckooFilter::printContents() {
 // temporary insert function
 bool CuckooFilter::insert(string value) {
 
-    cout << "ušao sam u insert s bucket_sizeom veličine " << bucket_size << endl;
+    cout << "ušao sam u insert s bucket_sizeom veličine " << bucket_size << " za value: " << value << endl;
+    
 
     int index;
     int alt_index;
@@ -233,7 +234,7 @@ int32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
 	
 }
 
-int32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int single_table_length){ // for now, fingerprint is a fixed inserted value
+int32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int singleTableLength){ 
 
     int32_t index;
     int32_t alt_index;
@@ -246,9 +247,9 @@ int32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int 
 
     int64_t hashAsNumber = hn.hash_to_number(hashFromValue);
 
-    index = hashAsNumber % single_table_length;
+    index = hashAsNumber % singleTableLength;
 
-    alt_index = (index ^ (fingerprintAsNumber * 0x9e3779b9)) % single_table_length; // golden ratio constant to enforce randomness
+    alt_index = (index ^ (fingerprintAsNumber * 0x9e3779b9)) % singleTableLength; // golden ratio constant to enforce randomness
 
     return alt_index;
 }
@@ -256,7 +257,7 @@ int32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int 
 
 bool CuckooFilter::tryInsert(string value){
 
-    cout << "ušao sam u tryInsert" << endl;
+    cout << "ušao sam u tryInsert za value: " << value << endl;
     cout << "bucket size u tryInsert = " << bucket_size << endl;
 
     for(int i = 0; i < MAX_RELOCATION; i++){

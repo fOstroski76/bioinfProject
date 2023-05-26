@@ -26,10 +26,10 @@ int Localize::get_location(string &str) {
     return int(bitset<8>(str[0])[0]);
 }
 
-void Localize::recover_xi_x(string &str, CF* node) {
+void Localize::recover_xi_x(string &str, CuckooFilter* node) {
     // not properly working but pushed so other can work with other code
     string up_tree = "";
-    CF* parent = node->get_parent();
+    CuckooFilter* parent = node->get_parent();
     // cout << "ulazni node je " << node << endl;
     // cout << "ulazni parent je " << parent << endl;
     while (parent != nullptr) {

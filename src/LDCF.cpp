@@ -12,7 +12,7 @@
 #include <iomanip>
 #include <stdlib.h>     // rand, rand
 #include <time.h>       // time
-#include "LDCF.h"
+//#include "LDCF.h"
 // #include "cuckoofilter.h"
 #include "Localizing.h"
 
@@ -53,7 +53,7 @@ bool LDCF::insert(string s) {
     int right;
     bool successful_insert;
     CuckooFilter* parent = new CuckooFilter(node->get_single_table_length(), node->get_bucket_size(), (node->get_level())-1);
-    while (node != nullptr && node->isFull) {
+    if (node != nullptr && node->isFull) {
         right = loc.get_location(s);
         if (right == 1) {
             parent = node;
