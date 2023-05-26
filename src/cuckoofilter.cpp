@@ -128,7 +128,7 @@ bool CuckooFilter::insert(string value) {
 
     } 
         
-    cout << "Insert failed! Both locations occupied!" << endl;
+    // cout << "Insert failed! Both locations occupied!" << endl;
     return false;
     
     
@@ -225,7 +225,7 @@ uint32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
 	uint32_t index;
     Hashing hashing;
     HashNumber hn;
-    cout << "bucket_size u generateFirstIndex = " << bucket_size << endl;
+    // cout << "bucket_size u generateFirstIndex = " << bucket_size << endl;
 
     string hashFromValue = hashing.hash_f(value);
 
@@ -235,7 +235,7 @@ uint32_t CuckooFilter::generateFirstIndex(string value, int singleTableLength){
     uint64_t tmp2 = 4;
     uint64_t tmp3 = tmp % tmp2;
 
-    cout << singleTableLength << endl;
+    // cout << singleTableLength << endl;
 
     index = uint64_t(hashAsNumber) % uint64_t(singleTableLength);
 
@@ -257,12 +257,12 @@ uint32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int
     uint64_t hashAsNumber = hn.hash_to_number(hashFromValue);
 
     index = hashAsNumber % singleTableLength;
-    cout << "singleTableLength" << singleTableLength << endl;
+    // cout << "singleTableLength" << singleTableLength << endl;
 
-    cout << "štaeovo" << (index ^ (fingerprintAsNumber * 0x9e3779b9)) << endl;
+    // cout << "štaeovo" << (index ^ (fingerprintAsNumber * 0x9e3779b9)) << endl;
 
     alt_index = uint32_t(index ^ (fingerprintAsNumber * 0x9e3779b9)) % singleTableLength; // golden ratio constant to enforce randomness
-    cout << "vraćam ti alt_index = " << alt_index << endl;
+    // cout << "vraćam ti alt_index = " << alt_index << endl;
 
     return alt_index;
 }
@@ -270,30 +270,30 @@ uint32_t CuckooFilter::generateSecondIndex(string value, string fingerprint, int
 
 bool CuckooFilter::tryInsert(string value){
 
-    cout << "ušao sam u tryInsert za value: " << value << endl;
-    cout << "bucket size u tryInsert = " << bucket_size << endl;
+    // cout << "ušao sam u tryInsert za value: " << value << endl;
+    // cout << "bucket size u tryInsert = " << bucket_size << endl;
 
     for(int i = 0; i < MAX_RELOCATION; i++){
         if(insert(value)) {
-            cout << "vratio sam se iz inserta sve 5" << endl;
+            // cout << "vratio sam se iz inserta sve 5" << endl;
             return true;
         }
 
         else {
-            cout << "insert nije uspio i idemo dalje" << endl;
+            // cout << "insert nije uspio i idemo dalje" << endl;
             Hashing hashing;
             VictimGenerator vg;
-            cout << "bucket_size je ovdje: " << bucket_size << endl;
+            // cout << "bucket_size je ovdje: " << bucket_size << endl;
             int victimIndex = vg.selectVictim(bucket_size);
-            cout << "dalje 2" << endl;
+            // cout << "dalje 2" << endl;
             string valueFingerprint = hashing.fingerprint(value);
-            cout << "dalje 3" << endl;
+            // cout << "dalje 3" << endl;
             int32_t valueFirstIndex = generateFirstIndex(value,single_table_length);
             //int32_t valueSecondIndex = generateSecondIndex(value,valueFingerprint, single_table_length);
             string victim = bucket[valueFirstIndex].stored_kmer[victimIndex];
-            cout << "dalje 4" << endl;
+            // cout << "dalje 4" << endl;
             bucket[valueFirstIndex].stored_kmer[victimIndex] = value;
-            cout << "dalje 5" << endl;
+            // cout << "dalje 5" << endl;
             value = victim;
             
         }

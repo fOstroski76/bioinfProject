@@ -18,12 +18,12 @@ int main() {
     CuckooFilter* left_child = ldcf->get_left_child();
     // cout << "drugi" << endl;
     CuckooFilter* right_child = ldcf->get_right_child();
-    cout << "treći" << endl;
+  // cout << "treći" << endl;
 
     string seq1 = "ATGATGCGCTGCTAGCTGCATG";
     bool tmp = ldcf->insert(seq1);
     // ldcf->get_node()->printContents();
-    cout << "četvrti" << endl;
+  // cout << "četvrti" << endl;
 
     string seq2 = "ATGATGCGCTGNNAGCTGCATG";
     ldcf->insert(seq2);

@@ -67,10 +67,10 @@ bool LDCF::insert(string s) {
             node = node->get_left_child();
         }
         else {
-            cout << "nešta se krivo računa" << endl;
+          // cout  << "nešta se krivo računa" << endl;
         }
     }
-    cout << "tu4" << endl;
+  // cout << "tu4" << endl;
     if (node == nullptr) {
         // loop was exited because all previous are full
         node = parent;
@@ -85,39 +85,39 @@ bool LDCF::insert(string s) {
             insertingCF = node->get_left_child();
         }
         successful_insert = insertingCF->tryInsert(s);
-        cout << "insert successful: " << successful_insert << endl;
-        cout << "added in new CF" << endl;
+      // cout << "insert successful: " << successful_insert << endl;
+      // cout << "added in new CF" << endl;
 
     }
     else if (!(node->isFull)) {
         // loop was exited because the first not full CF was found
         successful_insert = node->tryInsert(s);
-        cout << "insert successful: " << successful_insert << endl;
-        cout << "added to an existing CF" << endl;
-        cout << "node->isFull = " << node->isFull << endl;
+      // cout << "insert successful: " << successful_insert << endl;
+      // cout << "added to an existing CF" << endl;
+      // cout << "node->isFull = " << node->isFull << endl;
     }
     if (!successful_insert) {
-        cout << "ulazim u dodavanje ponovno" << endl;
+      // cout << "ulazim u dodavanje ponovno" << endl;
         node->generate_children(node->get_single_table_length(), node->get_bucket_size(), node->level);
-        cout << "1" << endl;
+      // cout << "1" << endl;
         right = loc.get_location(fgpt, node->level);
 
-        cout << "2" << endl;
+      // cout << "2" << endl;
         CuckooFilter* insertingCF;
         if (right) {
             insertingCF = node->get_right_child();
             insertingCF->printContents();
-            cout << "3" << endl;
+          // cout << "3" << endl;
         }
         else {
             insertingCF = node->get_left_child();
-            cout << "4" << endl;
+          // cout << "4" << endl;
         }
-        cout << "5" << endl;
-        cout << insertingCF->get_bucket_size() << endl;
+      // cout << "5" << endl;
+      // cout << insertingCF->get_bucket_size() << endl;
         successful_insert = insertingCF->tryInsert(s);
-        cout << "insert successful: " << successful_insert << endl;
-        cout << "added in new CF" << endl;
+      // cout << "insert successful: " << successful_insert << endl;
+      // cout << "added in new CF" << endl;
 
     }
 
