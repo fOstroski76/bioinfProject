@@ -53,7 +53,7 @@ bool LDCF::insert(string s) {
     int right;
     bool successful_insert;
     CuckooFilter* parent = new CuckooFilter(node->get_single_table_length(), node->get_bucket_size(), (node->get_level())-1);
-    if (node != nullptr && node->isFull) {
+    while (node != nullptr && node->isFull) {
         right = loc.get_location(s);
         if (right == 1) {
             parent = node;
@@ -92,6 +92,31 @@ bool LDCF::insert(string s) {
         cout << "added to an existing CF" << endl;
         cout << "node->isFull = " << node->isFull << endl;
     }
+    if (!successful_insert) {
+        cout << "ulazim u dodavanje ponovno" << endl;
+        node->generate_children(node->get_single_table_length(), node->get_bucket_size(), node->level);
+        cout << "1" << endl;
+        right = loc.get_location(s);
+
+        cout << "2" << endl;
+        CuckooFilter* insertingCF;
+        if (right) {
+            insertingCF = node->get_right_child();
+            insertingCF->printContents();
+            cout << "3" << endl;
+        }
+        else {
+            insertingCF = node->get_left_child();
+            cout << "4" << endl;
+        }
+        cout << "5" << endl;
+        cout << insertingCF->get_bucket_size() << endl;
+        successful_insert = insertingCF->tryInsert(s);
+        cout << "insert successful: " << successful_insert << endl;
+        cout << "added in new CF" << endl;
+
+    }
+
     return true;
 }
 
